@@ -21,15 +21,21 @@ def app(lista_jugadores: list)-> None:
                 if indice >= 0 and indice <len(lista_jugadores):
                     nombre_archivo = "nombre_estiditicas_jugador.csv"
                     jugador_segun_indice = obtener_nombre_estadisticas(lista_jugadores, indice)
+
                 else:
                     print("indice invalido".format(indice))
+
             case 3:
                 if nombre_archivo: 
                     guardar_archivo_csv(nombre_archivo, jugador_segun_indice)
                 else:
                     print("No puede guardar el archivo, primero tiene que ingresar a la opcion 2")
-                pass
+
             case 4:
+
+                nombre_buscado = input("Ingresa el nombre del jugador a buscar: ")
+                buscar_jugador(lista_jugadores, nombre_buscado)
+                
                 pass
             case 5:
                 pass
@@ -72,7 +78,7 @@ def app(lista_jugadores: list)-> None:
         clear_console()
 
 
-        
+
 
 archivo ="dt.json"
 

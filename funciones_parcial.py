@@ -23,7 +23,7 @@ def leer_archivo_sjon(ruta: str) -> list:
 
     """
 
-    with open(ruta, 'r') as archivo:
+    with open(ruta, 'r', encoding='utf-8' ) as archivo:
         contenido = json.load(archivo)
         lista_jugadores = contenido['jugadores']
     return lista_jugadores
@@ -58,6 +58,7 @@ def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
     print("Error al crear el archivo: {0}".format(nombre_archivo))
     return False
 
+
 def generar_texto(lista_diccionarios : list[dict])->str:
     """
     Esta función toma una lista de diccionarios y devuelve una cadena con las claves como primera línea
@@ -75,6 +76,7 @@ def generar_texto(lista_diccionarios : list[dict])->str:
     texto_generado = ""
 
     if lista_diccionarios:
+
         primer_diccionario = lista_diccionarios[0]
         claves = []
         for clave in primer_diccionario.keys():
@@ -90,7 +92,6 @@ def generar_texto(lista_diccionarios : list[dict])->str:
             texto_valores += ','.join(valores) + '\n'  
 
         texto_generado = texto_claves + '\n' + texto_valores 
-
     return texto_generado
 
 
@@ -141,20 +142,16 @@ def imprimir_menu_Desafio():
     Esta función imprime un menú con diferentes opciones.
     """
     menu = '''\n\t------------------- Menu---------------------------------------\n
-        1)Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
-        Nombre Jugador - Posición. Ejemplo:
-        Michael Jordan - Escolta
+        1)Mostrar la lista de todos los jugadores del Dream Team.
 
-        2)Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas 
-        completas, incluyendo temporadas jugadas, puntos totales, promedio de puntos por 
-        partido, rebotes totales, promedio de rebotes por partido, asistencias totales, 
-        promedio de asistencias por partido, robos totales, bloqueos totales, porcentaje de
-        tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
+        2)selecciona un jugador por su índice y mostrar sus estadísticas.
+       
+        3) guardar el jugador selecionado en el punto anterior.
 
-        3)Después de mostrar las estadísticas de un jugador seleccionado por el usuario, 
-        permite al usuario guardar las estadísticas de ese jugador en un archivo CSV.
-4)
-5)
+        4)buscar un jugador por su nombre y mostrar sus logros.
+
+        5) Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team,
+          ordenado por nombre de manera ascendente. 
 6)
 7)
 8)
@@ -203,26 +200,63 @@ def buscar_nombre_posicion(lista_jugadores: list)->str:
     entrada está vacía, se devolverá una cadena vacía.
     """
 
-def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
-    datos = ""
-    if lista_jugadores:
-        jugador_indice_ingresado = lista_jugadores[indice]
-        jugador_nombre = jugador_indice_ingresado["nombre"]
-        jugador_estadisticas = jugador_indice_ingresado["estadisticas"]
 
-        nombre = "{0}".format(jugador_nombre)
+
+def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
+    """
+    Esta función toma una lista de diccionarios que contienen información del jugador y un índice, y
+    devuelve una cadena con el nombre del jugador y sus estadísticas separados por comas.
+    
+    :param lista_jugadores: Una lista de diccionarios que contienen información sobre los jugadores y
+    sus estadísticas
+    :type lista_jugadores: list[dict]
+    :param indice: El parámetro "índice" es un número entero que representa el índice del jugador en la
+    lista de jugadores cuyo nombre y estadísticas queremos obtener
+    :return: una cadena que contiene el nombre de un jugador y sus estadísticas, separados por comas. Si
+    la lista de entrada está vacía, se devuelve una cadena vacía.
+    """
+
+    datos = ""
+
+    if lista_jugadores:
+
+        jugador_indice_ingresado = lista_jugadores[indice]
+        jugador_estadisticas = jugador_indice_ingresado["estadisticas"]
+        nombre_posicion = "{0}, {1}".format(jugador_indice_ingresado["nombre"], jugador_indice_ingresado["posicion"])
+
         lista_valores = []
 
-        print("Nombre : {}".format(nombre))
+        print("{0}".format(nombre_posicion))
+
         for clave, valor in jugador_estadisticas.items():
             print("{0} : {1}".format(clave, valor))
-            lista_valores.append(str(valor))
-        valores_str = ",".join(lista_valores)
 
-        datos = "{0},{1}".format(nombre,valores_str) 
+            lista_valores.append(str(valor))
+
+        valores_str = ",".join(lista_valores)
+        datos = "{0},{1}".format(nombre_posicion,valores_str) 
     return datos
 
+def buscar_jugador(lista_jugadores,nombre):
+    """
+    Esta función busca el nombre de un jugador en una lista de jugadores e imprime el nombre si lo
+    encuentra.
+    
+    :param lista_jugadores: una lista de diccionarios que contienen información sobre diferentes
+    jugadores
+    :param nombre: El nombre del jugador que queremos buscar en la lista de jugadores
+    """
+    falg = False
+    if lista_jugadores:
+        patron = r".*" + nombre + r".*"
+        for jugador in lista_jugadores:
+            if re.search(patron, jugador["nombre"], re.IGNORECASE):
+                print("\n\nNombre : {0}".format(jugador["nombre"]))
 
-
+                for logro in jugador["logros"]:
+                    print(logro)
+                falg = True
+    if not falg:
+        print("Error!, no se pudo encotrar el jugador") 
     
             
