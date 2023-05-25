@@ -43,14 +43,17 @@ def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
     :retorno: 
         -un valor booleano, ya sea True o False, según si el archivo se creó correctamente o no.
     """
-    
-    if nombre_archivo is str and  contenido is str: 
-        with open(nombre_archivo, 'w+') as archivo:
-            resultado = None # 
-            resultado = archivo.write(contenido)
-        if resultado:
-            print("Se creó el archivo: {0}".format(nombre_archivo))
-            return True
+    print("Nombre archivo".format(nombre_archivo))
+    print("datos: ".format(contenido))
+
+
+    #if nombre_archivo is str and  contenido is str: 
+    with open(nombre_archivo, 'w+') as archivo:
+        resultado = None # 
+        resultado = archivo.write(contenido)
+    if resultado:
+        print("Se creó el archivo: {0}".format(nombre_archivo))
+        return True
 
     print("Error al crear el archivo: {0}".format(nombre_archivo))
     return False
@@ -78,12 +81,12 @@ def generar_texto(lista_diccionarios : list[dict])->str:
             claves.append(clave)
 
         texto_claves = ','.join(claves) 
+
         texto_valores = ''
         for diccionario in lista_diccionarios:
             valores = []
             for valor in diccionario.values():
                 valores.append(str(valor))
-
             texto_valores += ','.join(valores) + '\n'  
 
         texto_generado = texto_claves + '\n' + texto_valores 
@@ -107,14 +110,14 @@ def validar_opcion_expresion(expresion: str, ingreso_teclado: str, busqueda = Fa
         La opción validada como una cadena. Si la opción no coincide con la expresión
         regular utilizando el método especificado, se devuelve "-1".
     """
-    opcion_validada = "-1"
+    opcion_validada = -1
 
     if busqueda:
         if re.search(expresion, ingreso_teclado):
             opcion_validada = ingreso_teclado
     else:
         if re.match(expresion, ingreso_teclado):
-            opcion_validada = ingreso_teclado
+            opcion_validada =int(ingreso_teclado)
 
     return opcion_validada
 
@@ -148,7 +151,8 @@ def imprimir_menu_Desafio():
         promedio de asistencias por partido, robos totales, bloqueos totales, porcentaje de
         tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
 
-3)
+        3)Después de mostrar las estadísticas de un jugador seleccionado por el usuario, 
+        permite al usuario guardar las estadísticas de ese jugador en un archivo CSV.
 4)
 5)
 6)
@@ -168,6 +172,7 @@ def imprimir_menu_Desafio():
 20)
 21) para salir!
     '''
+
     imprimir_dato(menu)
 def buscar_nombre_posicion(lista_jugadores: list)->str:
 
@@ -179,11 +184,45 @@ def buscar_nombre_posicion(lista_jugadores: list)->str:
     :type lista_jugadores: list
     :return: una cadena que contiene los nombres y posiciones de los jugadores en la lista de entrada.
     """
-
-    mensaje = ""
+    mensaje = "Error!"
     if lista_jugadores:
-        for jugador in lista_jugadores:
-            mensaje += "Nombre : {0} | posioción : {1}".format(jugador["nombre"], jugador["posicion"]) +"\n"
-    return mensaje
+        mensaje = "indice - Nombre - Posición\n"
+        for indice, jugador in enumerate(lista_jugadores):
+            mensaje += "{0} - {1} - {2}".format(indice, jugador["nombre"], jugador["posicion"]) + "\n"
+    imprimir_dato(mensaje)
+
+    """
+    La función toma una lista de diccionarios que contienen información del jugador y un índice, y
+    devuelve una cadena con el nombre del jugador y sus estadísticas separados por comas.
+    
+    :param lista_jugadores: Una lista de diccionarios que representan a los jugadores y sus estadísticas
+    :type lista_jugadores: list[dict]
+    :param indice: El parámetro "índice" es un número entero que representa el índice del jugador en la
+    lista de jugadores cuyo nombre y estadísticas queremos obtener
+    :return: una cadena con el nombre del jugador y sus estadísticas separadas por comas. Si la lista de
+    entrada está vacía, se devolverá una cadena vacía.
+    """
+
+def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
+    datos = ""
+    if lista_jugadores:
+        jugador_indice_ingresado = lista_jugadores[indice]
+        jugador_nombre = jugador_indice_ingresado["nombre"]
+        jugador_estadisticas = jugador_indice_ingresado["estadisticas"]
+
+        nombre = "{0}".format(jugador_nombre)
+        lista_valores = []
+
+        print("Nombre : {}".format(nombre))
+        for clave, valor in jugador_estadisticas.items():
+            print("{0} : {1}".format(clave, valor))
+            lista_valores.append(str(valor))
+        valores_str = ",".join(lista_valores)
+
+        datos = "{0},{1}".format(nombre,valores_str) 
+    return datos
+
+
+
     
             
