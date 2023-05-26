@@ -1,7 +1,6 @@
-
 import json
-import os
 import re
+import os
 
 def clear_console() -> None:
     """
@@ -22,8 +21,7 @@ def leer_archivo_sjon(ruta: str) -> list:
     :return: una lista de héroes leída de un archivo JSON ubicado en la ruta especificada.
 
     """
-
-    with open(ruta, 'r', encoding='utf-8' ) as archivo:
+    with open(ruta, 'r', encoding='utf-8') as archivo:
         contenido = json.load(archivo)
         lista_jugadores = contenido['jugadores']
     return lista_jugadores
@@ -94,8 +92,6 @@ def generar_texto(lista_diccionarios : list[dict])->str:
         texto_generado = texto_claves + '\n' + texto_valores 
     return texto_generado
 
-
-
 def validar_opcion_expresion(expresion: str, ingreso_teclado: str, busqueda = False) -> str:
     """
     Valida una opción utilizando una expresión regular y devuelve la opción si coincide;
@@ -122,10 +118,8 @@ def validar_opcion_expresion(expresion: str, ingreso_teclado: str, busqueda = Fa
 
     return opcion_validada
 
-
-
-
 def imprimir_dato(cadena_caracteres: str):
+
     """
     La función "imprimir_dato" comprueba si la entrada es una cadena y la imprime, de lo contrario,
     imprime un mensaje diciendo que no es una cadena.
@@ -137,24 +131,29 @@ def imprimir_dato(cadena_caracteres: str):
     else:
         print("No es una cadena de texto")
 
-def imprimir_menu_Desafio():
+def imprimir_menu_Desafio()-> None:
     """
     Esta función imprime un menú con diferentes opciones.
     """
-    menu = '''\n\t------------------- Menu---------------------------------------\n
-        1)Mostrar la lista de todos los jugadores del Dream Team.
 
-        2)selecciona un jugador por su índice y mostrar sus estadísticas.
+    menu = '''\n\t------------------- Menu---------------------------------------\n
+        1) Mostrar la lista de todos los jugadores del Dream Team.
+
+        2) selecciona un jugador por su índice y mostrar sus estadísticas.
        
         3) guardar el jugador selecionado en el punto anterior.
 
-        4)buscar un jugador por su nombre y mostrar sus logros.
+        4) buscar un jugador por su nombre y mostrar sus logros.
 
         5) Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team,
-          ordenado por nombre de manera ascendente. 
-6)
-7)
-8)
+           ordenado por nombre de manera ascendente. 
+
+        6) ingresar el nombre de un jugador y mostrar si ese jugador es miembro del
+            Salón de la Fama del Baloncesto.
+
+        7) Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
+
+        8) alcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
 9)
 10)
 11)
@@ -181,26 +180,15 @@ def buscar_nombre_posicion(lista_jugadores: list)->str:
     :type lista_jugadores: list
     :return: una cadena que contiene los nombres y posiciones de los jugadores en la lista de entrada.
     """
+
     mensaje = "Error!"
     if lista_jugadores:
         mensaje = "indice - Nombre - Posición\n"
-        for indice, jugador in enumerate(lista_jugadores):
+        for indice in range(len(lista_jugadores)):
+            jugador = lista_jugadores[indice]
             mensaje += "{0} - {1} - {2}".format(indice, jugador["nombre"], jugador["posicion"]) + "\n"
+
     imprimir_dato(mensaje)
-
-    """
-    La función toma una lista de diccionarios que contienen información del jugador y un índice, y
-    devuelve una cadena con el nombre del jugador y sus estadísticas separados por comas.
-    
-    :param lista_jugadores: Una lista de diccionarios que representan a los jugadores y sus estadísticas
-    :type lista_jugadores: list[dict]
-    :param indice: El parámetro "índice" es un número entero que representa el índice del jugador en la
-    lista de jugadores cuyo nombre y estadísticas queremos obtener
-    :return: una cadena con el nombre del jugador y sus estadísticas separadas por comas. Si la lista de
-    entrada está vacía, se devolverá una cadena vacía.
-    """
-
-
 
 def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
     """
@@ -224,39 +212,172 @@ def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
         jugador_estadisticas = jugador_indice_ingresado["estadisticas"]
         nombre_posicion = "{0}, {1}".format(jugador_indice_ingresado["nombre"], jugador_indice_ingresado["posicion"])
 
+        lista_claves = ["nombre", "posicion"]
         lista_valores = []
 
         print("{0}".format(nombre_posicion))
-
         for clave, valor in jugador_estadisticas.items():
             print("{0} : {1}".format(clave, valor))
-
+            lista_claves.append(clave)
             lista_valores.append(str(valor))
-
+        claves_str = ",".join(lista_claves)
         valores_str = ",".join(lista_valores)
-        datos = "{0},{1}".format(nombre_posicion,valores_str) 
+
+        datos ="{0}\n{1},{2}".format(claves_str ,nombre_posicion ,valores_str) 
+
     return datos
 
-def buscar_jugador(lista_jugadores,nombre):
+import re
+
+def buscar_jugador_por_nombre(lista_jugadores: list[dict]) -> list:
     """
-    Esta función busca el nombre de un jugador en una lista de jugadores e imprime el nombre si lo
-    encuentra.
+    Esta función toma una lista de diccionarios que contienen información sobre los jugadores y devuelve
+    una lista filtrada de jugadores basada en una búsqueda de nombre ingresada por el usuario.
     
-    :param lista_jugadores: una lista de diccionarios que contienen información sobre diferentes
-    jugadores
-    :param nombre: El nombre del jugador que queremos buscar en la lista de jugadores
+    :param lista_jugadores: Una lista de diccionarios que representan a los jugadores, donde cada
+    diccionario contiene información sobre un jugador, como su nombre, edad, posición, etc
+    :type lista_jugadores: list[dict]
+    :return: una lista de diccionarios que contienen información sobre los jugadores cuyos nombres
+    coinciden con la entrada de búsqueda proporcionada por el usuario.
     """
-    falg = False
+
+    lista_filtrada = []
     if lista_jugadores:
-        patron = r".*" + nombre + r".*"
+        nombre_busqueda = input("Ingrese el nombre del jugador: ")
+        patron = r".*" + nombre_busqueda + r".*"
         for jugador in lista_jugadores:
             if re.search(patron, jugador["nombre"], re.IGNORECASE):
-                print("\n\nNombre : {0}".format(jugador["nombre"]))
+                lista_filtrada.append(jugador)
+    return lista_filtrada
 
-                for logro in jugador["logros"]:
-                    print(logro)
-                falg = True
-    if not falg:
-        print("Error!, no se pudo encotrar el jugador") 
+def imprimir_datos_jugadores(lista_jugadores: list[dict], salon_de_la_fama: bool = False)-> None:
+    """
+    Esta función imprime los logros de una lista de jugadores de baloncesto y, opcionalmente, puede
+    filtrar por aquellos en el Salón de la Fama.
     
-            
+    :param lista_jugadores: Una lista de diccionarios que contienen información sobre jugadores de
+    baloncesto
+    :type lista_jugadores: list[dict]
+    :param salon_de_la_fama: Un parámetro booleano que determina si solo se imprimen los logros de los
+    jugadores que son miembros del Salón de la Fama del Baloncesto o no. Si se establece en Verdadero,
+    solo se imprimirán los logros de los jugadores del Salón de la Fama. Si se establece en False, se
+    imprimirán todos los logros de los jugadores de la lista, defaults to False
+    :type salon_de_la_fama: bool (optional)
+    """
+
+    if lista_jugadores:
+        print(f"{len(lista_jugadores)} jugadores coinciden con el parámetro de búsqueda:")
+        for jugador in lista_jugadores:
+            logros = jugador["logros"]
+            print("\n\nNombre: {0}".format(jugador["nombre"]))
+            if salon_de_la_fama:    
+                for logro in logros:
+                    if "Miembro del Salon de la Fama del Baloncesto" in logro:
+                        print(logro)
+            else:
+                for logro in logros:
+                    print(logro)
+    else:
+        print("No se encontraron jugadores que coincidan con el parámetro de búsqueda.")
+
+def calula_promedio(jugadores:list[dict],clave:str)-> float:
+    """
+    Esta función calcula el valor promedio de una subclave específica en una lista de diccionarios que
+    contienen estadísticas de jugadores.
+    
+    :param jugadores: una lista de diccionarios que representan a los jugadores, donde cada diccionario
+    contiene información sobre un jugador, incluidas sus estadísticas
+    :type jugadores: list[dict]
+    :param sub_clave: sub_clave es un parámetro de cadena que representa la subclave de la clave
+    "estadisticas" en el diccionario de cada jugador. Esta sub-clave se utiliza para acceder a una
+    estadística específica del jugador, como "puntos" (puntos), "rebotes" (rebotes), o
+    :type sub_clave: str
+    :return: un valor flotante que representa el promedio de una estadística específica (sub_clave) para
+    una lista de jugadores (jugadores) con diccionarios anidados que contienen información y
+    estadísticas del jugador. Si la lista está vacía o no se encuentra la estadística, la función
+    devuelve Ninguno.
+    """
+
+    if jugadores:
+        acumulador = 0
+        contador = 0
+        for jugador in jugadores:
+            acumulador += jugador["estadisticas"][clave]
+            contador +=1
+        if contador > 0:
+            promedio = acumulador / contador
+            return promedio
+    return None
+
+def lista_jugadores_alfabeticamente(jugadores:list)-> None:
+
+    if jugadores:
+        lista_odenada = []
+        promedio = calula_promedio(jugadores, "promedio_puntos_por_partido")
+        lista_odenada = ordenar_por_clave(jugadores , "nombre", True)
+        print("promedio del equipo: {0:.2f}".format(promedio))
+        for jugador in lista_odenada:
+            print(jugador["nombre"], jugador["estadisticas"]["promedio_puntos_por_partido"])
+    else:
+        print("Error")
+
+def ordenar_por_clave(lista: list[dict], clave: str, flag_orden: bool):
+    """
+    La función ordena una lista de diccionarios por una clave específica en orden ascendente o
+    descendente.
+    
+    :param lista: Una lista de diccionarios que se ordenarán según el valor de una clave específica en
+    cada diccionario
+    :type lista: list[dict]
+    :param clave: "clave" es un parámetro de cadena que representa la clave o atributo de los
+    diccionarios en la lista que se utilizará para ordenar la lista
+    :type clave: str
+    :param flag_orden: El parámetro flag_orden es un indicador booleano que determina si la lista de
+    diccionarios debe ordenarse en orden ascendente o descendente según el valor de la clave
+    especificada. Si flag_orden es True, la lista se ordenará en orden ascendente. Si flag_orden es
+    falso, la lista será
+    :type flag_orden: bool
+    :return: La función `ordenar_por_clave` devuelve una nueva lista que contiene los mismos
+    diccionarios que la lista de entrada, pero ordenados según el valor de una clave específica en cada
+    diccionario. El orden de clasificación está determinado por una bandera booleana (`flag_orden`),
+    donde `True` significa orden ascendente y `False` significa orden descendente.
+    """
+
+    lista_nueva = lista[:]
+    rango_a = len(lista) -1 
+    flag_swap = True
+
+    while flag_swap:
+        flag_swap = False
+        for indice_A in range(rango_a): 
+            if (flag_orden == True and lista_nueva[indice_A][clave] > lista_nueva[indice_A+1][clave]) \
+                    or (flag_orden == False and lista_nueva[indice_A][clave] < lista_nueva[indice_A+1][clave]):
+                lista_nueva[indice_A], lista_nueva[indice_A+1] = lista_nueva[indice_A+1], lista_nueva[indice_A]
+                flag_swap = True
+
+    return lista_nueva
+
+def encontrar_maximo(jugadores, clave_jugador, clave_valor):
+    """
+    La función encuentra el valor máximo de una clave específica en la lista de jugadores y devuelve
+    el nombre del jugador que tiene ese valor máximo, junto con el valor mismo, en forma de cadena de texto.
+    
+    :param jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
+    contiene su nombre y estadísticas
+    :param clave_jugador: la clave del diccionario que se utilizará para encontrar el valor máximo
+    :param clave_valor: la clave dentro de la clave anterior que se utilizará para obtener el valor específico
+    :return: una cadena de texto con el nombre del jugador que tiene el valor máximo de la clave especificada
+    y el valor máximo mismo.
+    """
+    nombre_maximo = None
+    maximo = 0
+    for jugador in jugadores:
+        valor = jugador[clave_jugador][clave_valor]
+        if nombre_maximo is None or valor > maximo:
+            maximo = valor
+            nombre_maximo = jugador["nombre"]
+
+    return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
+
+
+

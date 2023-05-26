@@ -1,19 +1,19 @@
 from funciones_parcial import *
 
-
 def app(lista_jugadores: list)-> None:
-    nombre_archivo = ""
-    jugador_segun_indice = ""
 
-    while True:
+    while True:      
 
         imprimir_menu_Desafio()
         opcion = input("Ingrese una opcion: ")
-        opcion = validar_opcion_expresion(r'^[1-9]{1,2}$', opcion )
+        opcion = validar_opcion_expresion(r'^[0-9]{1,2}$', opcion )
+
         match opcion:
             case 1:
+
                 buscar_nombre_posicion(lista_jugadores)
             case 2:
+
                 buscar_nombre_posicion(lista_jugadores)
                 indice = input("selecciona un jugador por su índice para ver sus estadísticas: ")
                 indice = validar_opcion_expresion(r'^[0-9]{1,2}$', indice )
@@ -21,30 +21,28 @@ def app(lista_jugadores: list)-> None:
                 if indice >= 0 and indice <len(lista_jugadores):
                     nombre_archivo = "nombre_estiditicas_jugador.csv"
                     jugador_segun_indice = obtener_nombre_estadisticas(lista_jugadores, indice)
-
                 else:
                     print("indice invalido".format(indice))
-
             case 3:
                 if nombre_archivo: 
                     guardar_archivo_csv(nombre_archivo, jugador_segun_indice)
                 else:
                     print("No puede guardar el archivo, primero tiene que ingresar a la opcion 2")
-
             case 4:
-
-                nombre_buscado = input("Ingresa el nombre del jugador a buscar: ")
-                buscar_jugador(lista_jugadores, nombre_buscado)
-                
-                pass
+                jugadores_encontrados = buscar_jugador_por_nombre(lista_jugadores)
+                imprimir_datos_jugadores(jugadores_encontrados)
             case 5:
-                pass
+                lista_jugadores_alfabeticamente(lista_jugadores)
             case 6:
-                pass
+                jugadores_encontrados = buscar_jugador_por_nombre(lista_jugadores)
+                imprimir_datos_jugadores(jugadores_encontrados, True)
             case 7:
-                pass
+                resultado = encontrar_maximo(lista_jugadores, "estadisticas", "rebotes_totales")
+                imprimir_dato(resultado)
+         
             case 8:
-                pass
+                resultado = encontrar_maximo(lista_jugadores, "estadisticas", "porcentaje_tiros_de_campo")
+                imprimir_dato(resultado)
             case 9:
                 pass
             case 10:
@@ -77,11 +75,6 @@ def app(lista_jugadores: list)-> None:
                 print("¡opción incorrecta!.")
         clear_console()
 
-
-
-
-archivo ="dt.json"
-
+archivo = "dt.json"
 lista_jugadores = leer_archivo_sjon(archivo)
 app(lista_jugadores)
-#print(lista_jugadores)
