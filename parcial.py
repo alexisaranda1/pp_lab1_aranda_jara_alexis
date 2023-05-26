@@ -44,7 +44,8 @@ def app(lista_jugadores: list)-> None:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "porcentaje_tiros_de_campo")
                 imprimir_dato(resultado)
             case 9:
-                pass
+                resultado = encontrar_maximo(lista_jugadores, "estadisticas", "promedio_asistencias_por_partido")
+                imprimir_dato(resultado)
             case 10:
                 pass
             case 10:

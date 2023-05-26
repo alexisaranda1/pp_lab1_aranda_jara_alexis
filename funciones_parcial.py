@@ -154,7 +154,9 @@ def imprimir_menu_Desafio()-> None:
         7) Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
 
         8) alcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
-9)
+        
+        9)Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
+
 10)
 11)
 12)
