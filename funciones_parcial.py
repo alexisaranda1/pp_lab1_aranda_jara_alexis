@@ -44,10 +44,8 @@ def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
     print("Nombre archivo".format(nombre_archivo))
     print("datos: ".format(contenido))
 
-
-    #if nombre_archivo is str and  contenido is str: 
     with open(nombre_archivo, 'w+') as archivo:
-        resultado = None # 
+        resultado = None 
         resultado = archivo.write(contenido)
     if resultado:
         print("Se creó el archivo: {0}".format(nombre_archivo))
@@ -107,7 +105,7 @@ def validar_opcion_expresion(expresion: str, ingreso_teclado: str, busqueda = Fa
         La opción validada como una cadena. Si la opción no coincide con la expresión
         regular utilizando el método especificado, se devuelve "-1".
     """
-    opcion_validada = -1
+    opcion_validada = False
 
     if busqueda:
         if re.search(expresion, ingreso_teclado):
@@ -135,7 +133,6 @@ def imprimir_menu_Desafio()-> None:
     """
     Esta función imprime un menú con diferentes opciones.
     """
-
     menu = '''\n\t------------------- Menu---------------------------------------\n
         1) Mostrar la lista de todos los jugadores del Dream Team.
 
@@ -154,11 +151,14 @@ def imprimir_menu_Desafio()-> None:
         7) Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
 
         8) alcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
-        
-        9)Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
 
-10)
-11)
+        9) Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
+
+        10)ingresar un valor y mostrar los jugadores que han promediado más
+        puntos por partido que ese valor.
+
+        11)ingresar un valor y mostrar los jugadores que han promediado más
+        rebotes por partido que ese valor.
 12)
 13)
 14)
@@ -170,7 +170,6 @@ def imprimir_menu_Desafio()-> None:
 20)
 21) para salir!
     '''
-
     imprimir_dato(menu)
 def buscar_nombre_posicion(lista_jugadores: list)->str:
 
@@ -211,25 +210,27 @@ def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
     if lista_jugadores:
 
         jugador_indice_ingresado = lista_jugadores[indice]
+
         jugador_estadisticas = jugador_indice_ingresado["estadisticas"]
-        nombre_posicion = "{0}, {1}".format(jugador_indice_ingresado["nombre"], jugador_indice_ingresado["posicion"])
+        nombre_posicion = "{0}, {1}".format(jugador_indice_ingresado["nombre"], \
+                                            jugador_indice_ingresado["posicion"])
 
         lista_claves = ["nombre", "posicion"]
         lista_valores = []
 
         print("{0}".format(nombre_posicion))
+
         for clave, valor in jugador_estadisticas.items():
             print("{0} : {1}".format(clave, valor))
             lista_claves.append(clave)
             lista_valores.append(str(valor))
+
         claves_str = ",".join(lista_claves)
         valores_str = ",".join(lista_valores)
 
         datos ="{0}\n{1},{2}".format(claves_str ,nombre_posicion ,valores_str) 
 
     return datos
-
-import re
 
 def buscar_jugador_por_nombre(lista_jugadores: list[dict]) -> list:
     """
@@ -244,19 +245,20 @@ def buscar_jugador_por_nombre(lista_jugadores: list[dict]) -> list:
     """
 
     lista_filtrada = []
+
     if lista_jugadores:
         nombre_busqueda = input("Ingrese el nombre del jugador: ")
         patron = r".*" + nombre_busqueda + r".*"
         for jugador in lista_jugadores:
             if re.search(patron, jugador["nombre"], re.IGNORECASE):
                 lista_filtrada.append(jugador)
+
     return lista_filtrada
 
 def imprimir_datos_jugadores(lista_jugadores: list[dict], salon_de_la_fama: bool = False)-> None:
     """
     Esta función imprime los logros de una lista de jugadores de baloncesto y, opcionalmente, puede
     filtrar por aquellos en el Salón de la Fama.
-    
     :param lista_jugadores: Una lista de diccionarios que contienen información sobre jugadores de
     baloncesto
     :type lista_jugadores: list[dict]
@@ -299,7 +301,6 @@ def calula_promedio(jugadores:list[dict],clave:str)-> float:
     estadísticas del jugador. Si la lista está vacía o no se encuentra la estadística, la función
     devuelve Ninguno.
     """
-
     if jugadores:
         acumulador = 0
         contador = 0
@@ -382,4 +383,27 @@ def encontrar_maximo(jugadores, clave_jugador, clave_valor):
     return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
 
 
+def filtrar_jugadores_por_estadistica(lista_jugadores, clave_estadistica):
+    """
+    Esta función filtra una lista de jugadores en función de su promedio de puntos y muestra en pantalla
+    los jugadores cuyo promedio de puntos es mayor que un valor dado.
+    
+    :param lista_jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
+    contiene información como su nombre, edad y puntos promedio por juego
+    :param clave_estadistica: La clave de la estadística que se utilizará para filtrar (por ejemplo, "promedio_puntos_por_partido")
+    """
+
+    flag = True
+    valor_ingresado = input("Ingresa un valor: ")
+    valor_ingresado = validar_opcion_expresion(r'^[0-9]{1,2}$', valor_ingresado)
+    if valor_ingresado:
+        
+        for jugador in lista_jugadores:
+            if jugador["estadisticas"][clave_estadistica] > valor_ingresado:
+
+                print("Nombre: {0}, {1}: {2}".format(jugador["nombre"], clave_estadistica, jugador["estadisticas"][clave_estadistica]))
+                flag = False
+
+    if flag:
+        print("No se encontraron jugadores con un {0} mayor que {1}.".format(clave_estadistica, valor_ingresado))
 

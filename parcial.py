@@ -27,7 +27,9 @@ def app(lista_jugadores: list)-> None:
                 if nombre_archivo: 
                     guardar_archivo_csv(nombre_archivo, jugador_segun_indice)
                 else:
+
                     print("No puede guardar el archivo, primero tiene que ingresar a la opcion 2")
+
             case 4:
                 jugadores_encontrados = buscar_jugador_por_nombre(lista_jugadores)
                 imprimir_datos_jugadores(jugadores_encontrados)
@@ -39,7 +41,6 @@ def app(lista_jugadores: list)-> None:
             case 7:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "rebotes_totales")
                 imprimir_dato(resultado)
-         
             case 8:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "porcentaje_tiros_de_campo")
                 imprimir_dato(resultado)
@@ -47,12 +48,9 @@ def app(lista_jugadores: list)-> None:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "promedio_asistencias_por_partido")
                 imprimir_dato(resultado)
             case 10:
-                pass
-            case 10:
-                pass
+                filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_puntos_por_partido")
             case 11:
-                pass
-            
+                filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_rebotes_por_partido")
             case 12:
                 pass                
             case 13:
