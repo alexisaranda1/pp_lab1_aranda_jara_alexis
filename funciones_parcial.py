@@ -26,30 +26,6 @@ def leer_archivo_json(ruta: str) -> list:
         lista_jugadores = contenido['jugadores']
     return lista_jugadores
 
-def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
-    """
-    Esta función guarda el contenido de una cadena en un archivo con el nombre de archivo dado y
-    devuelve un valor booleano que indica si la operación fue exitosa o no.
-
-    Parametros: 
-        -nombre_archivo: Una cadena que representa el nombre del archivo que se va a crear o
-        sobrescribir
-
-        -contenido: El contenido que se escribirá en el archivo. Debería ser una cadena
-
-    :retorno: 
-        -un valor booleano, ya sea True o False, según si el archivo se creó correctamente o no.
-    """
- 
-    with open(nombre_archivo, 'w+') as archivo:
-        resultado = None 
-        resultado = archivo.write(contenido)
-    if resultado:
-        print("Se creó el archivo: {0}".format(nombre_archivo))
-        return True
-
-    print("Error al crear el archivo: {0}".format(nombre_archivo))
-    return False
 
 def validar_opcion_expresion(expresion: str, ingreso_teclado: str) -> str:
 
@@ -128,7 +104,7 @@ def buscar_nombre_posicion(lista_jugadores: list)->str:
     mensaje = "Error!"
     if lista_jugadores:
         mensaje = "indice - Nombre - Posición\n"
-        for indice in range(len(lista_jugadores)):
+        for indice in range(len(lista_jugadores)):    
             jugador = lista_jugadores[indice]
             mensaje += "{0} - {1} - {2}".format(indice, jugador["nombre"], jugador["posicion"]) + "\n"
 
@@ -155,6 +131,7 @@ def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
         jugador_indice_ingresado = lista_jugadores[indice]
 
         jugador_estadisticas = jugador_indice_ingresado["estadisticas"]
+
         nombre_posicion = "{0}, {1}".format(jugador_indice_ingresado["nombre"], \
                                             jugador_indice_ingresado["posicion"])
 
@@ -171,7 +148,7 @@ def obtener_nombre_estadisticas(lista_jugadores: list[dict], indice)-> str:
         claves_str = ",".join(lista_claves)
         valores_str = ",".join(lista_valores)
 
-        datos ="{0}\n{1},{2}".format(claves_str ,nombre_posicion ,valores_str) 
+        datos = "{0}\n{1},{2}".format(claves_str ,nombre_posicion ,valores_str) 
 
     return datos
 
@@ -520,8 +497,6 @@ def imprimir_tabla_jugadores(lista_jugadores: list[dict])-> None:
     nombre_archivo = "informe_jugadores.csv"
     texto_generado = generar_texto(lista_jugadores)
     
-
-
     print("---------------------------------------------------------------------------")
     print("|     Jugador          |    Puntos  |   Rebotes |  Asistencias  |  Robos  |")
     print("---------------------------------------------------------------------------")
@@ -538,19 +513,6 @@ def imprimir_tabla_jugadores(lista_jugadores: list[dict])-> None:
 
 def generar_texto(lista_diccionarios: list[dict]) -> str:
     """
-    Esta función genera una cadena de valores separados por comas de una lista de diccionarios.
-    
-    :param lista_diccionarios: Una lista de diccionarios, donde cada diccionario representa una fila de
-    datos y las claves representan los nombres de las columnas y los valores representan los valores en
-    esa fila para cada columna
-    :type lista_diccionarios: list[dict]
-    :return: una cadena que contiene las claves del primer diccionario de la lista seguidas de un
-    carácter de nueva línea y, a continuación, los valores de todos los diccionarios de la lista,
-    separados por comas y nuevas líneas.
-    """
-
-def generar_texto(lista_diccionarios: list[dict]) -> str:
-    """
     Esta función genera una cadena de valores separados por comas de una lista de diccionarios con diccionarios
     anidados.
 
@@ -562,18 +524,46 @@ def generar_texto(lista_diccionarios: list[dict]) -> str:
     seguidas de un carácter de nueva línea y, a continuación, los valores de todos los diccionarios de la lista,
     separados por comas y nuevas líneas.
     """
-    if not lista_diccionarios:  # Verificar si la lista está vacía
-        return ""  # Retornar una cadena vacía
-
-    # Obtener todas las claves de los diccionarios, incluidas las claves de los diccionarios anidados
-    claves = {clave for jugador in lista_diccionarios for clave in jugador.keys()}
-
-    # Generar la cadena de texto
-    texto_generado = ",".join(claves) + "\n"  # Agregar las claves seguidas de una nueva línea
+    lista_claves = ["nombre", "posicion","puntos_totales", "rebotes_totales","robos_totales"]
+    lista_valores = []
 
     for jugador in lista_diccionarios:
-        valores = [str(jugador.get(clave, "")) if not isinstance(jugador.get(clave), dict) else str(jugador[clave]) for clave in claves]
-        texto_generado += ",".join(valores) + "\n"  # Agregar los valores separados por comas y una nueva línea
 
-    return texto_generado
+        lista_valores.append(jugador["nombre"])
+        lista_valores.append(str(jugador["estadisticas"]["puntos_totales"]))
+        lista_valores.append(str(jugador["estadisticas"]["rebotes_totales"]))
+        lista_valores.append(str(jugador["estadisticas"]["asistencias_totales"]))
+        lista_valores.append(str(jugador["estadisticas"]["robos_totales"]))
+  
 
+    claves_str = ",".join(lista_claves)
+    valores_str = ",".join(lista_valores)
+
+    datos = "{0}\n{1}".format(claves_str, valores_str)
+
+    return datos
+
+def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
+    """
+    Esta función guarda el contenido de una cadena en un archivo con el nombre de archivo dado y
+    devuelve un valor booleano que indica si la operación fue exitosa o no.
+
+    Parametros: 
+        -nombre_archivo: Una cadena que representa el nombre del archivo que se va a crear o
+        sobrescribir
+
+        -contenido: El contenido que se escribirá en el archivo. Debería ser una cadena
+
+    :retorno: 
+        -un valor booleano, ya sea True o False, según si el archivo se creó correctamente o no.
+    """
+ 
+    with open(nombre_archivo, 'w+') as archivo:
+        resultado = None 
+        resultado = archivo.write(contenido)
+    if resultado:
+        print("Se creó el archivo: {0}".format(nombre_archivo))
+        return True
+
+    print("Error al crear el archivo: {0}".format(nombre_archivo))
+    return False

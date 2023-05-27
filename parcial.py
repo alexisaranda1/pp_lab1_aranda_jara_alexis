@@ -16,14 +16,15 @@ def app(lista_jugadores: list) -> None:
             case 1:
                 buscar_nombre_posicion(lista_jugadores)
             case 2:
+                
                 buscar_nombre_posicion(lista_jugadores)
                 indice = input("Seleccione un jugador por su índice para ver sus estadísticas: ")
                 indice = validar_opcion_expresion(r'^[0-9]{1,2}$', indice)
 
-
                 if indice >= 0 and indice < len(lista_jugadores):
                     nombre_archivo = "nombre_estadisticas_jugador.csv"
                     jugador_segun_indice = obtener_nombre_estadisticas(lista_jugadores, indice)
+
                 else:
                     print("Índice inválido: {}".format(indice))
             case 3:
