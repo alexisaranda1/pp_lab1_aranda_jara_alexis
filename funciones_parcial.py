@@ -10,7 +10,7 @@ def clear_console() -> None:
     _ = input('Press a key to continue...')
     os.system('cls')
 
-def leer_archivo_sjon(ruta: str) -> list:
+def leer_archivo_json(ruta: str) -> list:
     """
     Esta función lee un archivo JSON de una ruta determinada y devuelve una lista de héroes.
 
@@ -40,9 +40,7 @@ def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
     :retorno: 
         -un valor booleano, ya sea True o False, según si el archivo se creó correctamente o no.
     """
-    print("Nombre archivo".format(nombre_archivo))
-    print("datos: ".format(contenido))
-
+ 
     with open(nombre_archivo, 'w+') as archivo:
         resultado = None 
         resultado = archivo.write(contenido)
@@ -127,7 +125,7 @@ def imprimir_dato(cadena_caracteres: str):
     else:
         print("No es una cadena de texto")
 
-def imprimir_menu_Desafio()-> None:
+def imprimir_menu()-> None:
 
 
 
@@ -135,6 +133,7 @@ def imprimir_menu_Desafio()-> None:
     Esta función imprime un menú con diferentes opciones.
     """
     menu = '''\n\t------------------- Menu---------------------------------------\n
+        0) Para salir de programa.
         1) Mostrar la lista de todos los jugadores del Dream Team.
         2) selecciona un jugador por su índice y mostrar sus estadísticas.
         3) guardar el jugador selecionado en el punto anterior.
@@ -162,12 +161,9 @@ def imprimir_menu_Desafio()-> None:
         18)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan
         tenido un porcentaje de tiros triples superior a ese valor.
         19)Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
-
         20) ingresar un valor y mostrar los jugadores , ordenados por posición en la cancha, 
         que hayan tenido un porcentaje de tiros de campo superior a ese valor.
-        23) Bonus ( Homenaje! )  
-
-21) para salir!
+        23) Bonus:
     '''
     imprimir_dato(menu)
 
@@ -377,29 +373,42 @@ def ordenar_por_clave(lista: list[dict], clave: str, flag_orden: bool):
 
     return lista_nueva
 
-
-def filtrar_jugadores_por_estadistica(lista_jugadores : list, clave_estadistica: str):
+def filtrar_jugadores_por_estadistica(lista_jugadores: list, clave_estadistica: str):
     """
-    Esta función filtra una lista de jugadores en función de su promedio de puntos y muestra en pantalla
-    los jugadores cuyo promedio de puntos es mayor que un valor dado.
-    
+    Esta función filtra una lista de jugadores en función de su promedio de puntos y retorna una lista
+    con los jugadores cuyo promedio de puntos es mayor que un valor dado.
+
     :param lista_jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
     contiene información como su nombre, edad y puntos promedio por juego
     :param clave_estadistica: La clave de la estadística que se utilizará para filtrar (por ejemplo, "promedio_puntos_por_partido")
+    :return: una lista con los jugadores que cumplen la condición
     """
-    flag = True
+    jugadores_filtrados = []
+
     valor_ingresado = input("Ingresa un valor: ")
     valor_ingresado = validar_opcion_expresion(r'^[0-9]{1,2}$', valor_ingresado)
+
     if valor_ingresado:
-        
         for jugador in lista_jugadores:
             if jugador["estadisticas"][clave_estadistica] > valor_ingresado:
-                clave_estadistica_str = clave_estadistica.replace("_", " ")
-                print("Nombre: {0}, {1}: {2}".format(jugador["nombre"], clave_estadistica_str, jugador["estadisticas"][clave_estadistica]))
-                flag = False
+                jugadores_filtrados.append(jugador)
 
-    if flag:
-        print("No se encontraron jugadores con un {0} mayor que {1}.".format(clave_estadistica, valor_ingresado))
+    return jugadores_filtrados
+
+def imprimir_jugadores(lista_jugadores, clave_estadistica):
+    """
+    Esta función recorre una lista de jugadores y imprime el nombre y el valor de una estadística específica de cada jugador.
+    
+    :param lista_jugadores: La lista de jugadores que se desea imprimir
+    :param clave_estadistica: La clave de la estadística que se desea imprimir (por ejemplo, "promedio_puntos_por_partido")
+    """
+    clave_estadistica_str = clave_estadistica.replace("_"," ")
+
+    for jugador in lista_jugadores:
+        nombre = jugador["nombre"]
+        valor_estadistica = jugador["estadisticas"][clave_estadistica]
+        if valor_estadistica:
+            print("{0}, {1}: {2}".format(nombre, clave_estadistica_str, valor_estadistica))
 
 def obtener_jugadores_sin_menor(jugadores, jugador_menor):
     """
@@ -525,33 +534,17 @@ def jugador_con_mas_temporadas(jugadores):
     for jugador, temporadas in jugadores_max_temporadas:
         print("Jugador: {} | Temporadas: {}".format(jugador, temporadas))
 
-
-
-
-def filtrar_jugadores(lista_jugadores : list, clave_estadistica: str):
-    """
-    Esta función filtra una lista de jugadores en función de su promedio de puntos y muestra en pantalla
-    los jugadores cuyo promedio de puntos es mayor que un valor dado.
-    
-    :param lista_jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
-    contiene información como su nombre, edad y puntos promedio por juego
-    :param clave_estadistica: La clave de la estadística que se utilizará para filtrar (por ejemplo, "promedio_puntos_por_partido")
-    """
-    flag = True
-    valor_ingresado = input("Ingresa un valor: ")
-    valor_ingresado = validar_opcion_expresion(r'^[0-9]{1,2}$', valor_ingresado)
-    lista_filtrada = []
-    if valor_ingresado:
-
-        for jugador in lista_jugadores:
-            if jugador["estadisticas"][clave_estadistica] > valor_ingresado:
-               lista_filtrada.append(jugador)
-
-    return lista_filtrada
-
 def ordenados_posicion_cancha(lista_jugadores):
+    """
+    Esta función toma una lista de jugadores, los filtra por su porcentaje de tiros de campo, los ordena
+    por su posición en la cancha e imprime su nombre y posición.
+    
+    :param lista_jugadores: una lista de diccionarios que representan a los jugadores de baloncesto, con
+    claves como "nombre" (nombre), "posición" (posición) y "porcentaje_tiros_de_campo" (porcentaje de
+    tiros de campo)
+    """
 
-    lista_filtrada = filtrar_jugadores(lista_jugadores,"porcentaje_tiros_de_campo")
+    lista_filtrada = filtrar_jugadores_por_estadistica(lista_jugadores,"porcentaje_tiros_de_campo")
     lista_odenada = ordenar_por_clave(lista_filtrada , "posicion", True)
     for jugador in lista_odenada:
         print(jugador["nombre"],jugador["posicion"])
