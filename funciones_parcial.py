@@ -165,6 +165,7 @@ def imprimir_menu_Desafio()-> None:
 
         20) ingresar un valor y mostrar los jugadores , ordenados por posición en la cancha, 
         que hayan tenido un porcentaje de tiros de campo superior a ese valor.
+        23) Bonus ( Homenaje! )  
 
 21) para salir!
     '''
@@ -386,7 +387,6 @@ def filtrar_jugadores_por_estadistica(lista_jugadores : list, clave_estadistica:
     contiene información como su nombre, edad y puntos promedio por juego
     :param clave_estadistica: La clave de la estadística que se utilizará para filtrar (por ejemplo, "promedio_puntos_por_partido")
     """
-
     flag = True
     valor_ingresado = input("Ingresa un valor: ")
     valor_ingresado = validar_opcion_expresion(r'^[0-9]{1,2}$', valor_ingresado)
@@ -528,4 +528,30 @@ def jugador_con_mas_temporadas(jugadores):
 
 
 
+def filtrar_jugadores(lista_jugadores : list, clave_estadistica: str):
+    """
+    Esta función filtra una lista de jugadores en función de su promedio de puntos y muestra en pantalla
+    los jugadores cuyo promedio de puntos es mayor que un valor dado.
+    
+    :param lista_jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
+    contiene información como su nombre, edad y puntos promedio por juego
+    :param clave_estadistica: La clave de la estadística que se utilizará para filtrar (por ejemplo, "promedio_puntos_por_partido")
+    """
+    flag = True
+    valor_ingresado = input("Ingresa un valor: ")
+    valor_ingresado = validar_opcion_expresion(r'^[0-9]{1,2}$', valor_ingresado)
+    lista_filtrada = []
+    if valor_ingresado:
 
+        for jugador in lista_jugadores:
+            if jugador["estadisticas"][clave_estadistica] > valor_ingresado:
+               lista_filtrada.append(jugador)
+
+    return lista_filtrada
+
+def ordenados_posicion_cancha(lista_jugadores):
+
+    lista_filtrada = filtrar_jugadores(lista_jugadores,"porcentaje_tiros_de_campo")
+    lista_odenada = ordenar_por_clave(lista_filtrada , "posicion", True)
+    for jugador in lista_odenada:
+        print(jugador["nombre"],jugador["posicion"])

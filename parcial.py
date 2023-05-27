@@ -8,6 +8,7 @@ def app(lista_jugadores: list)-> None:
         opcion = input("Ingrese una opcion: ")
         opcion = validar_opcion_expresion(r'^[0-9]{1,2}$', opcion )
 
+
         match opcion:
             case 1:
 
@@ -71,15 +72,23 @@ def app(lista_jugadores: list)-> None:
                 filtrar_jugadores_por_estadistica(lista_jugadores, "porcentaje_tiros_triples")
             case 19:
                 jugador_con_mas_temporadas(lista_jugadores)
-
             case 20:
-                print("salio!")
-                break
+                ordenados_posicion_cancha(lista_jugadores)
             case 21:
                 print("salio!")
                 break
+            case 23:
+
+                print("---------------------------------------------------------------------------")
+                print("|     Jugador          |    Puntos  |   Rebotes |  Asistencias  |  Robos  |")
+                print("---------------------------------------------------------------------------")
+                for jugador in lista_jugadores:
+                    print("|  {:19s} | {:^10d} | {:^9d} | {:^13d} | {:^7d} |".format(jugador["nombre"], jugador["estadisticas"]["puntos_totales"], jugador["estadisticas"]["rebotes_totales"], jugador["estadisticas"]["asistencias_totales"], jugador["estadisticas"]["robos_totales"]))
+                print("---------------------------------------------------------------------------")
+
             case _:
                 print("¡opción incorrecta!.")
+                
         clear_console()
 
 archivo = "dt.json"
