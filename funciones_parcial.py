@@ -163,7 +163,9 @@ def imprimir_menu_Desafio()-> None:
         tenido un porcentaje de tiros triples superior a ese valor.
         19)Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
 
-20)
+        20) ingresar un valor y mostrar los jugadores , ordenados por posición en la cancha, 
+        que hayan tenido un porcentaje de tiros de campo superior a ese valor.
+
 21) para salir!
     '''
     imprimir_dato(menu)
@@ -478,6 +480,9 @@ def encontrar_maximo(jugadores: list, clave_jugador, clave_valor: str):
     return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
     
 def obtener_jugador_mayor_logros(lista_jugadores):
+
+
+
     """
     La función devuelve el nombre del jugador con más logros de una lista de jugadores.
     
@@ -489,6 +494,7 @@ def obtener_jugador_mayor_logros(lista_jugadores):
     mayor_cantidad_logros = 0
     
     for jugador in lista_jugadores:
+
         cantidad_logros = len(jugador["logros"])
         if cantidad_logros > mayor_cantidad_logros:
             mayor_cantidad_logros = cantidad_logros
@@ -499,7 +505,7 @@ def obtener_jugador_mayor_logros(lista_jugadores):
 def jugador_con_mas_temporadas(jugadores):
     """
     Esta función encuentra al jugador(es) con la mayor cantidad de temporadas jugadas en base a una
-    lista de diccionarios de jugadores.
+    lista de diccionarios de jugadores y los imprime uno a la vez junto con su cantidad de temporadas.
     
     :param jugadores: una lista de diccionarios que representan a los jugadores, donde cada diccionario
     contiene información sobre el jugador, como su nombre y estadísticas
@@ -511,11 +517,15 @@ def jugador_con_mas_temporadas(jugadores):
         temporadas = jugador["estadisticas"]["temporadas"]
         if temporadas > max_temporadas:
             max_temporadas = temporadas
-            jugadores_max_temporadas = [jugador["nombre"]]
+            jugadores_max_temporadas = [(jugador["nombre"], temporadas)]
         elif temporadas == max_temporadas:
-            jugadores_max_temporadas.append(jugador["nombre"])
+            jugadores_max_temporadas.append((jugador["nombre"], temporadas))
 
-    print("Jugadores con la mayor cantidad de temporadas jugadas:", jugadores_max_temporadas)
+    print("Jugadores con la mayor cantidad de temporadas jugadas:")
+    for jugador, temporadas in jugadores_max_temporadas:
+        print("Jugador: {} | Temporadas: {}".format(jugador, temporadas))
+
+
 
 
 
