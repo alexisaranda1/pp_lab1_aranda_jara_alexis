@@ -56,7 +56,9 @@ def app(lista_jugadores: list)-> None:
             case 13:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "robos_totales")
                 imprimir_dato(resultado)
-     
+            case 14:
+                resultado = encontrar_maximo(lista_jugadores, "estadisticas", "bloqueos_totales")
+                imprimir_dato(resultado)
             case 15:
                 pass
             case 16:
@@ -68,7 +70,8 @@ def app(lista_jugadores: list)-> None:
             case 19:
                 pass
             case 20:
-                pass
+                print("salio!")
+                break
             case 21:
                 print("salio!")
                 break
