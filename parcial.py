@@ -60,7 +60,7 @@ def app(lista_jugadores: list)-> None:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "bloqueos_totales")
                 imprimir_dato(resultado)
             case 15:
-                pass
+                filtrar_jugadores_por_estadistica(lista_jugadores, "porcentaje_tiros_libres")
             case 16:
                 pass
             case 17:

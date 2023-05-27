@@ -167,7 +167,9 @@ def imprimir_menu_Desafio()-> None:
 
         14)Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
 
-15)
+        15)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan 
+        tenido un porcentaje de tiros libres superior a ese valor.
+        
 16)
 17)
 18)
