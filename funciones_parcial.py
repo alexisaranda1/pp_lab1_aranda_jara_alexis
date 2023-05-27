@@ -162,9 +162,11 @@ def imprimir_menu_Desafio()-> None:
 
         12) ingresar un valor y mostrar los jugadores que han promediado más 
         asistencias por partido que ese valor
+        
         13) Calcular y mostrar el jugador con la mayor cantidad de robos totales.
 
-14)
+        14)Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
+
 15)
 16)
 17)
@@ -383,7 +385,7 @@ def encontrar_maximo(jugadores: list, clave_jugador, clave_valor: str):
             maximo = valor
             nombre_maximo = jugador["nombre"]
     clave_valor = clave_valor.replace("_", " ")
-    
+
     return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
 
 
