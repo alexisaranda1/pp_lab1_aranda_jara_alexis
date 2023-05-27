@@ -71,7 +71,7 @@ def app(lista_jugadores: list)-> None:
                 filtrar_jugadores_por_estadistica(lista_jugadores, "porcentaje_tiros_triples")
             case 19:
                 jugador_con_mas_temporadas(lista_jugadores)
-    
+
             case 20:
                 print("salio!")
                 break
