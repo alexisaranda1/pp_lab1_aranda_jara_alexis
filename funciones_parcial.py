@@ -496,4 +496,26 @@ def obtener_jugador_mayor_logros(lista_jugadores):
 
     return jugador_mayor_logros
 
+def jugador_con_mas_temporadas(jugadores):
+    """
+    Esta función encuentra al jugador(es) con la mayor cantidad de temporadas jugadas en base a una
+    lista de diccionarios de jugadores.
+    
+    :param jugadores: una lista de diccionarios que representan a los jugadores, donde cada diccionario
+    contiene información sobre el jugador, como su nombre y estadísticas
+    """
+    max_temporadas = 0
+    jugadores_max_temporadas = []
+
+    for jugador in jugadores:
+        temporadas = jugador["estadisticas"]["temporadas"]
+        if temporadas > max_temporadas:
+            max_temporadas = temporadas
+            jugadores_max_temporadas = [jugador["nombre"]]
+        elif temporadas == max_temporadas:
+            jugadores_max_temporadas.append(jugador["nombre"])
+
+    print("Jugadores con la mayor cantidad de temporadas jugadas:", jugadores_max_temporadas)
+
+
 
