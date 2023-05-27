@@ -162,7 +162,8 @@ def imprimir_menu_Desafio()-> None:
 
         12) ingresar un valor y mostrar los jugadores que han promediado más 
         asistencias por partido que ese valor
-13)
+        13) Calcular y mostrar el jugador con la mayor cantidad de robos totales.
+
 14)
 15)
 16)
@@ -362,7 +363,7 @@ def ordenar_por_clave(lista: list[dict], clave: str, flag_orden: bool):
 
     return lista_nueva
 
-def encontrar_maximo(jugadores, clave_jugador, clave_valor):
+def encontrar_maximo(jugadores: list, clave_jugador, clave_valor: str):
     """
     La función encuentra el valor máximo de una clave específica en la lista de jugadores y devuelve
     el nombre del jugador que tiene ese valor máximo, junto con el valor mismo, en forma de cadena de texto.
@@ -381,7 +382,8 @@ def encontrar_maximo(jugadores, clave_jugador, clave_valor):
         if nombre_maximo is None or valor > maximo:
             maximo = valor
             nombre_maximo = jugador["nombre"]
-
+    clave_valor = clave_valor.replace("_", " ")
+    
     return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
 
 

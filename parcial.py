@@ -54,7 +54,9 @@ def app(lista_jugadores: list)-> None:
             case 12:
                   filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_asistencias_por_partido")           
             case 13:
-                pass
+                resultado = encontrar_maximo(lista_jugadores, "estadisticas", "robos_totales")
+                imprimir_dato(resultado)
+     
             case 15:
                 pass
             case 16:
