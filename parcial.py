@@ -52,7 +52,7 @@ def app(lista_jugadores: list)-> None:
             case 11:
                 filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_rebotes_por_partido")
             case 12:
-                pass                
+                  filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_asistencias_por_partido")           
             case 13:
                 pass
             case 15:

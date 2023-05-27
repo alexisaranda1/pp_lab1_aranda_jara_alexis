@@ -159,7 +159,9 @@ def imprimir_menu_Desafio()-> None:
 
         11)ingresar un valor y mostrar los jugadores que han promediado más
         rebotes por partido que ese valor.
-12)
+
+        12) ingresar un valor y mostrar los jugadores que han promediado más 
+        asistencias por partido que ese valor
 13)
 14)
 15)
@@ -383,7 +385,7 @@ def encontrar_maximo(jugadores, clave_jugador, clave_valor):
     return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
 
 
-def filtrar_jugadores_por_estadistica(lista_jugadores, clave_estadistica):
+def filtrar_jugadores_por_estadistica(lista_jugadores : list, clave_estadistica: str):
     """
     Esta función filtra una lista de jugadores en función de su promedio de puntos y muestra en pantalla
     los jugadores cuyo promedio de puntos es mayor que un valor dado.
@@ -400,8 +402,8 @@ def filtrar_jugadores_por_estadistica(lista_jugadores, clave_estadistica):
         
         for jugador in lista_jugadores:
             if jugador["estadisticas"][clave_estadistica] > valor_ingresado:
-
-                print("Nombre: {0}, {1}: {2}".format(jugador["nombre"], clave_estadistica, jugador["estadisticas"][clave_estadistica]))
+                clave_estadistica_str = clave_estadistica.replace("_", " ")
+                print("Nombre: {0}, {1}: {2}".format(jugador["nombre"], clave_estadistica_str, jugador["estadisticas"][clave_estadistica]))
                 flag = False
 
     if flag:
