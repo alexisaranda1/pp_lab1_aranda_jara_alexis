@@ -29,15 +29,16 @@ def app(lista_jugadores: list)-> None:
                 else:
 
                     print("No puede guardar el archivo, primero tiene que ingresar a la opcion 2")
-
             case 4:
+                buscar_nombre_posicion(lista_jugadores)
                 jugadores_encontrados = buscar_jugador_por_nombre(lista_jugadores)
                 imprimir_datos_jugadores(jugadores_encontrados)
             case 5:
                 lista_jugadores_alfabeticamente(lista_jugadores)
             case 6:
+                buscar_nombre_posicion(lista_jugadores)
                 jugadores_encontrados = buscar_jugador_por_nombre(lista_jugadores)
-                imprimir_datos_jugadores(jugadores_encontrados, True)
+                imprimir_datos_jugadores_salon(jugadores_encontrados)
             case 7:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "rebotes_totales")
                 imprimir_dato(resultado)
@@ -45,7 +46,7 @@ def app(lista_jugadores: list)-> None:
                 resultado = encontrar_maximo(lista_jugadores, "estadisticas", "porcentaje_tiros_de_campo")
                 imprimir_dato(resultado)
             case 9:
-                resultado = encontrar_maximo(lista_jugadores, "estadisticas", "promedio_asistencias_por_partido")
+                resultado = encontrar_maximo(lista_jugadores, "estadisticas", "asistencias_totales")
                 imprimir_dato(resultado)
             case 10:
                 filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_puntos_por_partido")
@@ -62,11 +63,12 @@ def app(lista_jugadores: list)-> None:
             case 15:
                 filtrar_jugadores_por_estadistica(lista_jugadores, "porcentaje_tiros_libres")
             case 16:
-                pass
+                procesar_jugadores(lista_jugadores)
             case 17:
-                pass
+                jugador_con_mayor_logros = obtener_jugador_mayor_logros(lista_jugadores)
+                print("El jugador con la mayor cantidad de logros obtenidos es:", jugador_con_mayor_logros)
             case 18:
-                pass
+                filtrar_jugadores_por_estadistica(lista_jugadores, "porcentaje_tiros_triples")
             case 19:
                 pass
             case 20:

@@ -26,7 +26,6 @@ def leer_archivo_sjon(ruta: str) -> list:
         lista_jugadores = contenido['jugadores']
     return lista_jugadores
 
-
 def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
     """
     Esta función guarda el contenido de una cadena en un archivo con el nombre de archivo dado y
@@ -53,7 +52,6 @@ def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
 
     print("Error al crear el archivo: {0}".format(nombre_archivo))
     return False
-
 
 def generar_texto(lista_diccionarios : list[dict])->str:
     """
@@ -130,54 +128,46 @@ def imprimir_dato(cadena_caracteres: str):
         print("No es una cadena de texto")
 
 def imprimir_menu_Desafio()-> None:
+
+
+
     """
     Esta función imprime un menú con diferentes opciones.
     """
     menu = '''\n\t------------------- Menu---------------------------------------\n
         1) Mostrar la lista de todos los jugadores del Dream Team.
-
         2) selecciona un jugador por su índice y mostrar sus estadísticas.
-       
         3) guardar el jugador selecionado en el punto anterior.
-
         4) buscar un jugador por su nombre y mostrar sus logros.
-
         5) Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team,
            ordenado por nombre de manera ascendente. 
-
         6) ingresar el nombre de un jugador y mostrar si ese jugador es miembro del
             Salón de la Fama del Baloncesto.
-
         7) Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
-
         8) alcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
-
         9) Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
-
         10)ingresar un valor y mostrar los jugadores que han promediado más
         puntos por partido que ese valor.
-
         11)ingresar un valor y mostrar los jugadores que han promediado más
         rebotes por partido que ese valor.
-
         12) ingresar un valor y mostrar los jugadores que han promediado más 
         asistencias por partido que ese valor
-        
         13) Calcular y mostrar el jugador con la mayor cantidad de robos totales.
-
         14)Calcular y mostrar el jugador con la mayor cantidad de bloqueos totales.
-
         15)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan 
         tenido un porcentaje de tiros libres superior a ese valor.
-        
-16)
-17)
-18)
-19)
+        16)Calcular y mostrar el promedio de puntos por partido del equipo excluyendo
+          al jugador con la menor cantidad de puntos por partido.
+        17)Calcular y mostrar el jugador con la mayor cantidad de logros obtenidos
+        18)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan
+        tenido un porcentaje de tiros triples superior a ese valor.
+        19)Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
+
 20)
 21) para salir!
     '''
     imprimir_dato(menu)
+
 def buscar_nombre_posicion(lista_jugadores: list)->str:
 
     """
@@ -262,7 +252,7 @@ def buscar_jugador_por_nombre(lista_jugadores: list[dict]) -> list:
 
     return lista_filtrada
 
-def imprimir_datos_jugadores(lista_jugadores: list[dict], salon_de_la_fama: bool = False)-> None:
+def imprimir_datos_jugadores(lista_jugadores: list[dict])-> None:
     """
     Esta función imprime los logros de una lista de jugadores de baloncesto y, opcionalmente, puede
     filtrar por aquellos en el Salón de la Fama.
@@ -280,14 +270,31 @@ def imprimir_datos_jugadores(lista_jugadores: list[dict], salon_de_la_fama: bool
         print(f"{len(lista_jugadores)} jugadores coinciden con el parámetro de búsqueda:")
         for jugador in lista_jugadores:
             logros = jugador["logros"]
-            print("\n\nNombre: {0}".format(jugador["nombre"]))
-            if salon_de_la_fama:    
-                for logro in logros:
-                    if "Miembro del Salon de la Fama del Baloncesto" in logro:
-                        print(logro)
-            else:
-                for logro in logros:
-                    print(logro)
+            for logro in logros:
+                print(logro)
+    else:
+        print("No se encontraron jugadores que coincidan con el parámetro de búsqueda.")
+
+def imprimir_datos_jugadores_salon(lista_jugadores: list[dict])-> None:
+    """
+    Esta función imprime los nombres de los jugadores de baloncesto que son miembros del Salón de la
+    Fama del Baloncesto de una lista de jugadores.
+    
+    :param lista_jugadores: Una lista de diccionarios que representan a jugadores de baloncesto, donde
+    cada diccionario contiene información sobre un jugador, como su nombre, equipo, posición y logros
+    :type lista_jugadores: list[dict]
+    """
+
+    if lista_jugadores:
+        for jugador in lista_jugadores:
+            logros = jugador["logros"]
+            flag = True
+            for logro in logros:
+                if "Miembro del Salon de la Fama del Baloncesto" == logro:
+                    print(jugador["nombre"], logro)
+                    flag = False
+            if flag:
+                print("el jugador no pertenece al salon de la fama")
     else:
         print("No se encontraron jugadores que coincidan con el parámetro de búsqueda.")
 
@@ -367,29 +374,6 @@ def ordenar_por_clave(lista: list[dict], clave: str, flag_orden: bool):
 
     return lista_nueva
 
-def encontrar_maximo(jugadores: list, clave_jugador, clave_valor: str):
-    """
-    La función encuentra el valor máximo de una clave específica en la lista de jugadores y devuelve
-    el nombre del jugador que tiene ese valor máximo, junto con el valor mismo, en forma de cadena de texto.
-    
-    :param jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
-    contiene su nombre y estadísticas
-    :param clave_jugador: la clave del diccionario que se utilizará para encontrar el valor máximo
-    :param clave_valor: la clave dentro de la clave anterior que se utilizará para obtener el valor específico
-    :return: una cadena de texto con el nombre del jugador que tiene el valor máximo de la clave especificada
-    y el valor máximo mismo.
-    """
-    nombre_maximo = None
-    maximo = 0
-    for jugador in jugadores:
-        valor = jugador[clave_jugador][clave_valor]
-        if nombre_maximo is None or valor > maximo:
-            maximo = valor
-            nombre_maximo = jugador["nombre"]
-    clave_valor = clave_valor.replace("_", " ")
-
-    return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
-
 
 def filtrar_jugadores_por_estadistica(lista_jugadores : list, clave_estadistica: str):
     """
@@ -414,4 +398,102 @@ def filtrar_jugadores_por_estadistica(lista_jugadores : list, clave_estadistica:
 
     if flag:
         print("No se encontraron jugadores con un {0} mayor que {1}.".format(clave_estadistica, valor_ingresado))
+
+def obtener_jugadores_sin_menor(jugadores, jugador_menor):
+    """
+    La función obtiene una lista de jugadores sin el jugador con la puntuación más baja.
+    
+    :param jugadores: una lista de jugadores
+    :param jugador_menor: El parámetro "jugador_menor" es una variable que representa al jugador con
+    menor puntuación o rendimiento en un partido o competición. La función "obtener_jugadores_sin_menor"
+    toma dos parámetros: "jugadores", que es una lista de jugadores, y "jugador_menor
+    :return: una lista de jugadores (jugadores_sin_menor) que excluye al jugador con la puntuación más
+    baja (jugador_menor) de la lista original de jugadores (jugadores).
+    """
+    jugadores_sin_menor = []
+    for jugador in jugadores:
+        if jugador["nombre"] != jugador_menor:
+            jugadores_sin_menor.append(jugador)
+    return jugadores_sin_menor
+
+def procesar_jugadores(jugadores):
+
+    """
+    Esta función procesa una lista de jugadores, encuentra al jugador con el puntaje promedio más bajo,
+    calcula el puntaje promedio de todos los jugadores e imprime los nombres de todos los jugadores
+    excepto el que tiene el puntaje promedio más bajo.
+    
+    :param jugadores: Es una lista de diccionarios, donde cada diccionario representa a un jugador y
+    contiene información como su nombre, edad, posición y promedio de puntos por juego
+    """
+    jugador_menor = encontrar_jugador_menor_promedio(jugadores)
+    jugadores_sin_menor = obtener_jugadores_sin_menor(jugadores, jugador_menor)
+    promedio_puntos = calula_promedio(jugadores_sin_menor, "promedio_puntos_por_partido")
+
+    print(f"El promedio de puntos por partido es: {promedio_puntos:.2f}")
+    print("Jugadores sin el jugador con el menor promedio:")
+    for jugador in jugadores_sin_menor:
+        print(jugador["nombre"], jugador["estadisticas"]["promedio_puntos_por_partido"])
+    
+def encontrar_jugador_menor_promedio(jugadores):
+    """
+    Esta función encuentra al jugador con el promedio de puntos más bajo por juego de una lista de
+    jugadores.
+    
+    :param jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
+    contiene información sobre sus estadísticas, como su nombre, edad y puntos promedio por juego
+    :return: el jugador con el promedio de puntos más bajo por juego de una lista de jugadores.
+    """
+    jugador_menor = None
+    menor_promedio = float('inf')
+    for jugador in jugadores:
+        promedio = jugador["estadisticas"]["promedio_puntos_por_partido"]
+        if promedio < menor_promedio:
+            menor_promedio = promedio
+            jugador_menor = jugador["nombre"]
+    print("jugador menor ",jugador_menor)
+    return jugador_menor
+
+def encontrar_maximo(jugadores: list, clave_jugador, clave_valor: str):
+    """
+    La función encuentra el valor máximo de una clave específica en la lista de jugadores y devuelve
+    el nombre del jugador que tiene ese valor máximo, junto con el valor mismo, en forma de cadena de texto.
+    
+    :param jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
+    contiene su nombre y estadísticas
+    :param clave_jugador: la clave del diccionario que se utilizará para encontrar el valor máximo
+    :param clave_valor: la clave dentro de la clave anterior que se utilizará para obtener el valor específico
+    :return: una cadena de texto con el nombre del jugador que tiene el valor máximo de la clave especificada
+    y el valor máximo mismo.
+    """
+    nombre_maximo = None
+    maximo = 0
+    for jugador in jugadores:
+        valor = jugador[clave_jugador][clave_valor]
+        if nombre_maximo is None or valor > maximo:
+            maximo = valor
+            nombre_maximo = jugador["nombre"]
+    clave_valor = clave_valor.replace("_", " ")
+
+    return "El jugador {0}  tiene la mayor cantidad de {1} : {2}.".format(nombre_maximo, clave_valor, maximo)
+    
+def obtener_jugador_mayor_logros(lista_jugadores):
+    """
+    La función devuelve el nombre del jugador con más logros de una lista de jugadores.
+    
+    :param lista_jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
+    contiene su nombre y una lista de sus logros
+    :return: el nombre del jugador con más logros en la lista de jugadores proporcionada como entrada.
+    """
+    jugador_mayor_logros = None
+    mayor_cantidad_logros = 0
+    
+    for jugador in lista_jugadores:
+        cantidad_logros = len(jugador["logros"])
+        if cantidad_logros > mayor_cantidad_logros:
+            mayor_cantidad_logros = cantidad_logros
+            jugador_mayor_logros = jugador["nombre"]
+
+    return jugador_mayor_logros
+
 
