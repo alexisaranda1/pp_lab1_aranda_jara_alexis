@@ -519,7 +519,7 @@ def imprimir_tabla_jugadores(lista_jugadores: list[dict])-> None:
     """
     nombre_archivo = "informe_jugadores.csv"
     texto_generado = generar_texto(lista_jugadores)
-    guardar_archivo_csv(nombre_archivo, texto_generado)
+    
 
 
     print("---------------------------------------------------------------------------")
@@ -534,34 +534,46 @@ def imprimir_tabla_jugadores(lista_jugadores: list[dict])-> None:
             jugador["estadisticas"]["robos_totales"])
         )
     print("---------------------------------------------------------------------------")
+    guardar_archivo_csv(nombre_archivo, texto_generado)
 
 def generar_texto(lista_diccionarios: list[dict]) -> str:
     """
-    Esta función toma una lista de diccionarios y devuelve una cadena con las claves como primera línea
-    y los valores de cada diccionario como líneas subsiguientes separadas por comas.
-
-    Parametros:
-        lista_diccionarios (list[dict]): Una lista de diccionarios, donde cada diccionario representa una fila de
-            datos y las claves representan los nombres de las columnas.
-
-    Returno:
-        str: Una cadena que contiene las claves de los diccionarios en la lista de entrada separadas por
-            comas en la primera línea, y los valores de cada diccionario en la lista de entrada separados por
-            comas y nuevas líneas en las líneas siguientes.
+    Esta función genera una cadena de valores separados por comas de una lista de diccionarios.
+    
+    :param lista_diccionarios: Una lista de diccionarios, donde cada diccionario representa una fila de
+    datos y las claves representan los nombres de las columnas y los valores representan los valores en
+    esa fila para cada columna
+    :type lista_diccionarios: list[dict]
+    :return: una cadena que contiene las claves del primer diccionario de la lista seguidas de un
+    carácter de nueva línea y, a continuación, los valores de todos los diccionarios de la lista,
+    separados por comas y nuevas líneas.
     """
-    texto_generado = ""
 
-    if lista_diccionarios:
-        primer_diccionario = lista_diccionarios[0]
-        claves = list(primer_diccionario.keys())
-        texto_claves = ','.join(claves)
+def generar_texto(lista_diccionarios: list[dict]) -> str:
+    """
+    Esta función genera una cadena de valores separados por comas de una lista de diccionarios con diccionarios
+    anidados.
 
-        texto_valores = ''
-        for diccionario in lista_diccionarios:
-            valores = list(diccionario.values())
-            valores_texto = [str(valor) for valor in valores]
-            texto_valores += ','.join(valores_texto) + '\n'
+    :param lista_diccionarios: Una lista de diccionarios, donde cada diccionario representa una fila de
+    datos y las claves representan los nombres de las columnas y los valores representan los valores en
+    esa fila para cada columna. Algunas claves pueden tener valores que son diccionarios anidados.
+    :type lista_diccionarios: list[dict]
+    :return: una cadena que contiene las claves de todos los diccionarios, incluidos los diccionarios anidados,
+    seguidas de un carácter de nueva línea y, a continuación, los valores de todos los diccionarios de la lista,
+    separados por comas y nuevas líneas.
+    """
+    if not lista_diccionarios:  # Verificar si la lista está vacía
+        return ""  # Retornar una cadena vacía
 
-        texto_generado = texto_claves + '\n' + texto_valores
+    # Obtener todas las claves de los diccionarios, incluidas las claves de los diccionarios anidados
+    claves = {clave for jugador in lista_diccionarios for clave in jugador.keys()}
+
+    # Generar la cadena de texto
+    texto_generado = ",".join(claves) + "\n"  # Agregar las claves seguidas de una nueva línea
+
+    for jugador in lista_diccionarios:
+        valores = [str(jugador.get(clave, "")) if not isinstance(jugador.get(clave), dict) else str(jugador[clave]) for clave in claves]
+        texto_generado += ",".join(valores) + "\n"  # Agregar los valores separados por comas y una nueva línea
 
     return texto_generado
+
