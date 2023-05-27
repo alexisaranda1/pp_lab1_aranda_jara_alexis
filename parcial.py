@@ -81,18 +81,7 @@ def app(lista_jugadores: list) -> None:
             case 20:
                 ordenados_posicion_cancha(lista_jugadores)
             case 23:
-                print("---------------------------------------------------------------------------")
-                print("|     Jugador          |    Puntos  |   Rebotes |  Asistencias  |  Robos  |")
-                print("---------------------------------------------------------------------------")
-                for jugador in lista_jugadores:
-                    print("|  {:19s} | {:^10d} | {:^9d} | {:^13d} | {:^7d} |".format(
-                        jugador["nombre"],
-                        jugador["estadisticas"]["puntos_totales"],
-                        jugador["estadisticas"]["rebotes_totales"],
-                        jugador["estadisticas"]["asistencias_totales"],
-                        jugador["estadisticas"]["robos_totales"])
-                    )
-                print("---------------------------------------------------------------------------")
+                imprimir_tabla_jugadores(lista_jugadores)
             case _:
                 print("¡Opción incorrecta!")
 
