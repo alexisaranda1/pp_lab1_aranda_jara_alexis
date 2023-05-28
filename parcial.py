@@ -1,35 +1,32 @@
 from funciones_parcial import *
 
+
 def app(lista_jugadores: list) -> None:
-    nombre_archivo = ""
+
+    texto_generado = ""
     jugador_segun_indice = None
 
     while True:
+
         imprimir_menu()
         opcion = input("Ingrese una opción: ")
         opcion = validar_opcion_expresion(r'^([0-9]|1[0-9]|2[0-3])$', opcion)
 
         match opcion:
+
             case 0:
                 print("¡Salió!")
                 break
             case 1:
                 buscar_nombre_posicion(lista_jugadores)
             case 2:
-                
                 buscar_nombre_posicion(lista_jugadores)
-                indice = input("Seleccione un jugador por su índice para ver sus estadísticas: ")
-                indice = validar_opcion_expresion(r'^[0-9]{1,2}$', indice)
-
-                if indice >= 0 and indice < len(lista_jugadores):
-                    nombre_archivo = "nombre_estadisticas_jugador.csv"
-                    jugador_segun_indice = obtener_nombre_estadisticas(lista_jugadores, indice)
-
-                else:
-                    print("Índice inválido: {}".format(indice))
+                jugador_segun_indice = obtener_nombre_estadisticas(lista_jugadores)
             case 3:
                 if jugador_segun_indice:
-                    guardar_archivo_csv(nombre_archivo, jugador_segun_indice)
+                    nombre_archivo = "nombre_estadisticas_jugador.csv"
+                    texto_generado = genera_texto(jugador_segun_indice)
+                    guardar_archivo_csv(nombre_archivo, texto_generado)
                 else:
                     print("No se puede guardar el archivo. Primero debe ingresar a la opción 2.")
             case 4:
@@ -82,12 +79,53 @@ def app(lista_jugadores: list) -> None:
             case 20:
                 ordenados_posicion_cancha(lista_jugadores)
             case 23:
-                imprimir_tabla_jugadores(lista_jugadores)
+
+                #imprimir_tabla_jugadores(lista_jugadores)
+
+                lista_ordenada_puntos_totales = ordenar_por_estaditica(lista_jugadores,"puntos_totales",False)
+                lista_ordenada_rebotes_totales = ordenar_por_estaditica(lista_jugadores,"rebotes_totales",False)
+                lista_ordenada_asistencias_totales = ordenar_por_estaditica(lista_jugadores,"asistencias_totales",False)
+                lista_ordenada_bloqueos_totales = ordenar_por_estaditica(lista_jugadores,"bloqueos_totales",False)
+
+                print ("----------------puntos-------------------")
+                for i in range(len(lista_ordenada_puntos_totales)):
+                    jugador = lista_ordenada_puntos_totales[i]
+                    jugador["estadisticas"]["puntos_totales"] = i + 1
+                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
+                print("-----------------rebotes-----------------------------")
+
+                for i in range(len(lista_ordenada_rebotes_totales)):
+                    jugador = lista_ordenada_puntos_totales[i]
+                    jugador["estadisticas"]["puntos_totales"] = i + 1
+                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
+                print("----------------asitencias-------------")
+
+                for i in range(len(lista_ordenada_asistencias_totales)):
+                    jugador = lista_ordenada_puntos_totales[i]
+                    jugador["estadisticas"]["puntos_totales"] = i + 1
+                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
+                print("----------------bloqueos-------------")
+                for i in range(len(lista_ordenada_bloqueos_totales)):
+                    jugador = lista_ordenada_puntos_totales[i]
+                    jugador["estadisticas"]["puntos_totales"] = i + 1
+                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
             case _:
                 print("¡Opción incorrecta!")
 
         clear_console()
 
+
+
+
 archivo = "dt.json"
 lista_jugadores = leer_archivo_json(archivo)
 app(lista_jugadores)
+
+
+
+
+
+
+
+
+
