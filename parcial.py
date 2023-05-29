@@ -1,4 +1,5 @@
 from funciones_parcial import *
+from biblioteca_imprimir import*
 
 def app(lista_jugadores: list) -> None:
     
@@ -20,10 +21,6 @@ def app(lista_jugadores: list) -> None:
         opcion = validar_opcion_expresion(r'^([0-9]|1[0-9]|2[0-3])$', opcion)
 
         match opcion:
-
-            case 0:
-                print("¡Salió!")
-                break
             case 1:
                 imprimir_lista_jugadores(lista_jugadores)
             case 2:
@@ -89,15 +86,19 @@ def app(lista_jugadores: list) -> None:
                 jugador_con_mas_temporadas(lista_jugadores)
             case 20:
                 ordenados_posicion_cancha(lista_jugadores)
+            case 21:
+                print("¡Salió!")
+                break
             case 23:
                 jugadores_con_estadisticas = obtener_jugadores_con_estadisticas_ordenadas(lista_jugadores)
+                nombre_archivo = "informe_jugadores.csv"
+                texto_generado = generar_texto(jugadores_con_estadisticas)
+                guardar_archivo_csv(nombre_archivo, texto_generado)
                 imprimir_guarda_tabla_jugadores(jugadores_con_estadisticas)
-                
-            case _:
 
+            case _:
                 print("¡Opción incorrecta!")
         clear_console()
-
 
 
 archivo = "dt.json"
