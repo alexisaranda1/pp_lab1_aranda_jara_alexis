@@ -54,8 +54,9 @@ def app(lista_jugadores: list) -> None:
                 max_porcentaje_tiros_campo = encontrar_maximo(lista_jugadores, "estadisticas", "porcentaje_tiros_de_campo")
                 imprimir_jugador_maximo(max_porcentaje_tiros_campo, "estadisticas", "porcentaje_tiros_de_campo")
             case 9:
-                max_asistencias =  (lista_jugadores, "estadisticas", "asistencias_totales")
-                imprimir_jugador_maximo(max_asistencias, "estadisticas", "asistencias_totales")
+                    max_asistencias = encontrar_maximo (lista_jugadores, "estadisticas",  "asistencias_totales")
+                    imprimir_jugador_maximo(max_asistencias,"estadisticas", "asistencias_totales" )
+        
             case 10:
                 jugadores_promedio_puntos = filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_puntos_por_partido")
                 imprimir_jugadores(jugadores_promedio_puntos, "promedio_puntos_por_partido")

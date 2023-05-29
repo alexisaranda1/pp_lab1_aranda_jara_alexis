@@ -120,15 +120,14 @@ def imprimir_datos_jugadores_salon(lista_jugadores: list[dict])-> None:
         print("No se encontraron jugadores que coincidan con el parámetro de búsqueda.")
 
 #7,8,13,14
-def imprimir_jugador_maximo(jugador_maximo: dict, clave_jugador:str, clave_valor: str):
+def imprimir_jugador_maximo(jugador_maximo: dict, clave_jugador: str, clave_valor: str):
     """
     Esta función encuentra el jugador que tiene el valor máximo de una clave específica en la lista de jugadores
     y imprime los datos del jugador y el valor máximo.
 
-    :param lista_jugadores: una lista de diccionarios, donde cada diccionario representa a un jugador y
-    contiene su nombre y estadísticas
-    :param clave_jugador: la clave del diccionario que se utilizará para encontrar el valor máximo
-    :param clave_valor: la clave dentro de la clave anterior que se utilizará para obtener el valor específico
+    :param jugador_maximo: un diccionario que representa al jugador con el valor máximo
+    :param clave_jugador: la clave del diccionario que se utilizará para obtener el valor máximo
+    :param clave_valor: la clave dentro del diccionario del jugador que se utilizará para obtener el valor específico
     """
     if jugador_maximo:
         valor_maximo = jugador_maximo[clave_jugador][clave_valor]
@@ -137,9 +136,8 @@ def imprimir_jugador_maximo(jugador_maximo: dict, clave_jugador:str, clave_valor
         print("Jugador con el valor máximo de {}:".format(clave_str))
         print("Nombre: {}".format(nombre_jugador))
         print("{}: {}".format(clave_str, valor_maximo))
-
     else:
-        print("No se  ningún jugador.")
+        print("No se encontró ningún jugador.")
 
 # 10,11,12,12,15,18
 def imprimir_jugadores(lista_jugadores: list[dict], clave_estadistica: str)-> None:
