@@ -1,13 +1,13 @@
 nombre,posicion,puntos_totales,rebotes_totales,robos_totales
-Karl Malone,1,1,5
-Michael Jordan,2,8,2
-Patrick Ewing,3,3,11
-Charles Barkley,4,2,7
-Clyde Drexler,5,7,4
-Larry Bird,6,5,8
-David Robinson,7,4,10
-John Stockton,8,11,1
-Scottie Pippen,9,6,3
-Chris Mullin,10,10,9
-Magic Johnson,11,9,6
-Christian Laettner,12,12,12
+Christian Laettner,1,1,1
+Magic Johnson,2,4,7
+Chris Mullin,3,3,4
+Scottie Pippen,4,7,10
+John Stockton,5,2,12
+David Robinson,6,9,3
+Larry Bird,7,8,5
+Clyde Drexler,8,6,9
+Charles Barkley,9,11,6
+Patrick Ewing,10,10,2
+Michael Jordan,11,5,11
+Karl Malone,12,12,8
