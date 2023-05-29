@@ -86,8 +86,10 @@ def imprimir_datos_jugadores(lista_jugadores: list[dict])-> None:
 
 
     if lista_jugadores:
-        print(f"{len(lista_jugadores)} jugadores coinciden con el parámetro de búsqueda:")
+        print("{0} coinciden con el nombre de búscado:".format(len(lista_jugadores)))
+      
         for jugador in lista_jugadores:
+            print("\n{}".format(jugador["nombre"]))
             logros = jugador["logros"]
             for logro in logros:
                 print(logro)

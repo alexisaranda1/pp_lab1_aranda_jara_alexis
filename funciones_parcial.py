@@ -8,12 +8,10 @@ def clear_console() -> None:
     llamando al comando "cls" desde el sistema operativo.
     """
 
-    _ = input('Press a key to continue...')
+    _ = input('\n\nPresiona enter para continuar...')
     os.system('cls')
 
-
-
-def validar_opcion_expresion(expresion: str, ingreso_teclado: str) -> bool or int :
+def validar_opcion_expresion(expresion: str, ingreso_teclado: str) -> bool or int:
     """
     Esta función valida si la entrada de un usuario coincide con una expresión regular determinada y
     devuelve la entrada como un número entero o Falso.
@@ -26,14 +24,15 @@ def validar_opcion_expresion(expresion: str, ingreso_teclado: str) -> bool or in
     :return: ya sea un número entero (si la entrada coincide con la expresión regular) o Falso (si la
     entrada no coincide con la expresión regular).
     """
-
-    if re.match(expresion, ingreso_teclado):
+    if ingreso_teclado == "":
+        return False
+    elif re.match(expresion, ingreso_teclado):
         return int(ingreso_teclado)
     else:
         return False
 
 #2
-def obtener_nombre_estadisticas(lista_jugadores: list[dict])-> dict:
+def obtener_nombre_estadisticas(lista_jugadores: list[dict]) -> dict:
     """
     Esta función toma una lista de diccionarios que contienen información del jugador y devuelve las
     estadísticas de un jugador seleccionado en función de su índice.
@@ -47,26 +46,24 @@ def obtener_nombre_estadisticas(lista_jugadores: list[dict])-> dict:
     entrada es válido y la lista de jugadores no está vacía. Si el índice de entrada no es válido o la
     lista está vacía, la función no devolverá nada.
     """
-
+    jugador_ese_indice = None
     if lista_jugadores:
-
         indice = input("Seleccione un jugador por su índice para ver sus estadísticas: ")
-        
-        indice = validar_opcion_expresion(r'^[0-9]{1,2}$', indice)
+        indice = validar_opcion_expresion(r'^(?:[0-9]|1[0-1])$', indice)
 
-        if  indice >= 0 and indice < len(lista_jugadores):
+        if indice is not False:
             jugador_ese_indice = lista_jugadores[indice]
-
-            dicionario_estadisticas = {}
             dicionario_estadisticas = jugador_ese_indice["estadisticas"]
 
             print(jugador_ese_indice["nombre"])
             for clave, valor in dicionario_estadisticas.items():
                 print(clave, valor)
         else:
-            print("Error indice invadilo {0}".format(indice))
+            print("Error, el índice debe ser un número válido del 0 al 11.")
 
     return jugador_ese_indice
+
+
 
 
 def buscar_jugador_por_nombre(lista_jugadores: list[dict]) -> list:
