@@ -27,6 +27,31 @@ def leer_archivo_json(ruta: str) -> list:
         lista_jugadores = contenido['jugadores']
     return lista_jugadores
 
+def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
+    """
+    Esta función guarda el contenido de una cadena en un archivo con el nombre de archivo dado y
+    devuelve un valor booleano que indica si la operación fue exitosa o no.
+
+    Parametros: 
+        -nombre_archivo: Una cadena que representa el nombre del archivo que se va a crear o
+        sobrescribir
+
+        -contenido: El contenido que se escribirá en el archivo. Debería ser una cadena
+
+    :retorno: 
+        -un valor booleano, ya sea True o False, según si el archivo se creó correctamente o no.
+    """
+ 
+    with open(nombre_archivo, 'w+') as archivo:
+        resultado = None 
+        resultado = archivo.write(contenido)
+    if resultado:
+        print("Se creó el archivo: {0}".format(nombre_archivo))
+        return True
+
+    print("Error al crear el archivo: {0}".format(nombre_archivo))
+    return False
+
 def validar_opcion_expresion(expresion: str, ingreso_teclado: str) -> bool| int:
     """
     Valida una entrada de usuario contra una expresión regular y devuelve un booleano o un entero.
@@ -98,14 +123,15 @@ def imprimir_menu()-> None:
     '''
     imprimir_dato(menu)
 
-def imprimir_lista_jugadores(lista_jugadores: list) -> str:
+def imprimir_lista_jugadores(lista_jugadores: list) -> None:
     """
-    Imprime en forma de cadena los nombres y posiciones de los jugadores junto con su índice en la lista.
-
-    :param lista_jugadores: Lista de jugadores, cada uno representado por un diccionario con las claves "nombre" y "posición".
+    Esta función toma una lista de jugadores e imprime su índice, nombre y posición.
+    
+    :param lista_jugadores: Una lista de diccionarios que representan a los jugadores de un equipo
+    deportivo. Cada diccionario contiene las claves "nombre" y "posición" con sus respectivos valores
     :type lista_jugadores: list
-    :return: Cadena con los nombres y posiciones de los jugadores junto con su índice en la lista.
     """
+
     mensaje = "Error!"
     if lista_jugadores:
         mensaje = "indice - Nombre - Posición\n"
@@ -117,19 +143,18 @@ def imprimir_lista_jugadores(lista_jugadores: list) -> str:
 
 
 def obtener_nombre_estadisticas(lista_jugadores: list[dict])-> dict:
-
     """
-    Esta función toma una lista de diccionarios que representan a los jugadores y un índice, recupera al
-    jugador en ese índice, imprime su nombre y estadísticas y devuelve el diccionario que representa a
-    ese jugador.
+    Esta función toma una lista de diccionarios que contienen información del jugador y devuelve las
+    estadísticas de un jugador seleccionado en función de su índice.
     
-    :param lista_jugadores: una lista de diccionarios que contienen información sobre los jugadores y
-    sus estadísticas
+    :param lista_jugadores: Una lista de diccionarios que representan a los jugadores y sus
+    estadísticas. Cada diccionario contiene las claves "nombre" (nombre) y "estadisticas"
+    (estadísticas). El valor de "estadisticas" es otro diccionario que contiene las estadísticas del
+    jugador
     :type lista_jugadores: list[dict]
-    :param indice: El parámetro "índice" es un número entero que representa el índice del jugador en la
-    lista de jugadores cuyo nombre y estadísticas queremos obtener
-    :return: el diccionario del jugador en el índice especificado en la lista de entrada de los
-    diccionarios del jugador.
+    :return: el diccionario de estadísticas para el jugador seleccionado, pero solo si el índice de
+    entrada es válido y la lista de jugadores no está vacía. Si el índice de entrada no es válido o la
+    lista está vacía, la función no devolverá nada.
     """
 
     if lista_jugadores:
@@ -153,16 +178,18 @@ def obtener_nombre_estadisticas(lista_jugadores: list[dict])-> dict:
 
 
 def buscar_jugador_por_nombre(lista_jugadores: list[dict]) -> list:
+
     """
-    Esta función toma una lista de diccionarios que contienen información sobre los jugadores y devuelve
-    una lista filtrada de jugadores basada en una búsqueda de nombre ingresada por el usuario.
+    Esta función toma una lista de diccionarios que representan a los jugadores y devuelve una lista
+    filtrada de jugadores basada en una búsqueda de nombre ingresada por el usuario.
     
     :param lista_jugadores: Una lista de diccionarios que representan a los jugadores, donde cada
     diccionario contiene información sobre un jugador, como su nombre, edad, posición, etc
     :type lista_jugadores: list[dict]
     :return: una lista de diccionarios que contienen información sobre los jugadores cuyos nombres
-    coinciden con la entrada de búsqueda proporcionada por el usuario.
+    coinciden con la entrada proporcionada por el usuario.
     """
+
 
     lista_filtrada = []
 
@@ -178,17 +205,16 @@ def buscar_jugador_por_nombre(lista_jugadores: list[dict]) -> list:
 
 def imprimir_datos_jugadores(lista_jugadores: list[dict])-> None:
     """
-    Esta función imprime los logros de una lista de jugadores de baloncesto y, opcionalmente, puede
-    filtrar por aquellos en el Salón de la Fama.
-    :param lista_jugadores: Una lista de diccionarios que contienen información sobre jugadores de
-    baloncesto
+    La función imprime los logros de una lista de jugadores si coinciden con un parámetro de búsqueda, o
+    imprime un mensaje si ningún jugador coincide con el parámetro.
+    
+    :param lista_jugadores: una lista de diccionarios que representan a los jugadores y sus logros. Cada
+    diccionario contiene información sobre un solo jugador, incluido su nombre, edad, equipo y una lista
+    de sus logros (logros en español). La función imprime los logros de todos los jugadores de la lista
+    que coinciden con un determinado parámetro de búsqueda. Si no
     :type lista_jugadores: list[dict]
-    :param salon_de_la_fama: Un parámetro booleano que determina si solo se imprimen los logros de los
-    jugadores que son miembros del Salón de la Fama del Baloncesto o no. Si se establece en Verdadero,
-    solo se imprimirán los logros de los jugadores del Salón de la Fama. Si se establece en False, se
-    imprimirán todos los logros de los jugadores de la lista, defaults to False
-    :type salon_de_la_fama: bool (optional)
     """
+
 
     if lista_jugadores:
         print(f"{len(lista_jugadores)} jugadores coinciden con el parámetro de búsqueda:")
@@ -202,12 +228,13 @@ def imprimir_datos_jugadores(lista_jugadores: list[dict])-> None:
 def imprimir_datos_jugadores_salon(lista_jugadores: list[dict])-> None:
     """
     Esta función imprime los nombres de los jugadores de baloncesto que son miembros del Salón de la
-    Fama del Baloncesto de una lista de jugadores.
+    Fama, dada una lista de diccionarios de jugadores.
     
-    :param lista_jugadores: Una lista de diccionarios que representan a jugadores de baloncesto, donde
-    cada diccionario contiene información sobre un jugador, como su nombre, equipo, posición y logros
+    :param lista_jugadores: Una lista de diccionarios que representan a los jugadores de baloncesto y
+    sus logros
     :type lista_jugadores: list[dict]
     """
+
 
     if lista_jugadores:
         for jugador in lista_jugadores:
@@ -222,36 +249,41 @@ def imprimir_datos_jugadores_salon(lista_jugadores: list[dict])-> None:
     else:
         print("No se encontraron jugadores que coincidan con el parámetro de búsqueda.")
 
-def calula_promedio(jugadores:list[dict],clave1: str,clave2:str)-> float:
+
+def calula_promedio(jugadores: list[dict], primera_clave: str, segunda_clave: str) -> float:
     """
-    Esta función calcula el valor promedio de una subclave específica en una lista de diccionarios que
-    contienen estadísticas de jugadores.
-    
-    :param jugadores: una lista de diccionarios que representan a los jugadores, donde cada diccionario
-    contiene información sobre un jugador, incluidas sus estadísticas
-    :type jugadores: list[dict]
-    :param sub_clave: sub_clave es un parámetro de cadena que representa la subclave de la clave
-    "estadisticas" en el diccionario de cada jugador. Esta sub-clave se utiliza para acceder a una
-    estadística específica del jugador, como "puntos" (puntos), "rebotes" (rebotes), o
-    :type sub_clave: str
-    :return: un valor flotante que representa el promedio de una estadística específica (sub_clave) para
-    una lista de jugadores (jugadores) con diccionarios anidados que contienen información y
-    estadísticas del jugador. Si la lista está vacía o no se encuentra la estadística, la función
-    devuelve Ninguno.
+    Calcula el valor promedio de una clave específica dentro de una lista de diccionarios.
+
+    :param jugadores: Una lista de diccionarios que representan a los jugadores y sus estadísticas.
+    :param primera_clave: La clave del diccionario de primer nivel en la lista de jugadores.
+    :param segunda_clave: La clave utilizada para acceder al valor en el diccionario anidado dentro de cada jugador.
+    :return: Un valor flotante que es el promedio de un valor específico para cada jugador en la lista de diccionarios.
+             Si la lista está vacía, devuelve None.
     """
+
+
     if jugadores:
         acumulador = 0
         contador = 0
         for jugador in jugadores:
-            acumulador += jugador[clave1][clave2]
-            contador +=1
+            acumulador += jugador[primera_clave][segunda_clave]
+            contador += 1
         if contador > 0:
             promedio = acumulador / contador
             return promedio
     return None
 
 
+
 def lista_jugadores_alfabeticamente(jugadores:list)-> None:
+    """
+    Esta función toma una lista de jugadores y los ordena alfabéticamente por nombre, al mismo tiempo
+    que calcula e imprime el puntaje promedio del equipo y el puntaje promedio de cada jugador.
+    
+    :param jugadores: El parámetro "jugadores" es una lista de diccionarios, donde cada diccionario
+    representa a un jugador y contiene información sobre su nombre y estadísticas
+    :type jugadores: list
+    """
 
     if jugadores:
         lista_odenada = []
@@ -266,24 +298,14 @@ def lista_jugadores_alfabeticamente(jugadores:list)-> None:
 
 def ordenar_por_clave(lista: list[dict], clave: str, flag_orden: bool)->list[dict]:
     """
-    La función ordena una lista de diccionarios por una clave específica en orden ascendente o
-    descendente.
-    
-    :param lista: Una lista de diccionarios que se ordenarán según el valor de una clave específica en
-    cada diccionario
-    :type lista: list[dict]
-    :param clave: "clave" es un parámetro de cadena que representa la clave o atributo de los
-    diccionarios en la lista que se utilizará para ordenar la lista
-    :type clave: str
-    :param flag_orden: El parámetro flag_orden es un indicador booleano que determina si la lista de
-    diccionarios debe ordenarse en orden ascendente o descendente según el valor de la clave
-    especificada. Si flag_orden es True, la lista se ordenará en orden ascendente. Si flag_orden es
-    falso, la lista será
-    :type flag_orden: bool
-    :return: La función `ordenar_por_clave` devuelve una nueva lista que contiene los mismos
-    diccionarios que la lista de entrada, pero ordenados según el valor de una clave específica en cada
-    diccionario. El orden de clasificación está determinado por una bandera booleana (`flag_orden`),
-    donde `True` significa orden ascendente y `False` significa orden descendente.
+    Ordena una lista de diccionarios por una clave específica en orden ascendente o descendente.
+
+    :param lista: Una lista de diccionarios que se ordenarán según el valor de una clave específica en cada diccionario.
+    :param clave: La clave o atributo de los diccionarios en la lista que se utilizará para ordenar la lista.
+    :param flag_orden: Indicador booleano que determina si la lista debe ordenarse en orden ascendente o descendente.
+                       True para orden ascendente, False para orden descendente.
+    :return: Una nueva lista que contiene los mismos diccionarios que la lista de entrada, pero ordenados según el valor de
+             la clave específica. El orden de clasificación está determinado por la bandera booleana `flag_orden`.
     """
 
     lista_nueva = lista[:]
@@ -424,14 +446,6 @@ def imprimir_jugador_maximo(jugador_maximo: dict, clave_jugador:str, clave_valor
     else:
         print("No se  ningún jugador.")
 
-
-
-
-
-
-
-
-
 def jugador_con_mas_temporadas(jugadores):
     """
     Esta función encuentra al jugador(es) con la mayor cantidad de temporadas jugadas en base a una
@@ -454,10 +468,6 @@ def jugador_con_mas_temporadas(jugadores):
     print("Jugadores con la mayor cantidad de temporadas jugadas:")
     for jugador, temporadas in jugadores_max_temporadas:
         print("Jugador: {} | Temporadas: {}".format(jugador, temporadas))
-
-
-    
-    
 
 def encontrar_maximo(lista_jugadores, clave_jugador, clave_valor):
     """
@@ -482,11 +492,7 @@ def encontrar_maximo(lista_jugadores, clave_jugador, clave_valor):
 
     return jugador_maximo
 
-
-
 def obtener_jugador_mayor_logros(lista_jugadores: list[dict])-> str:
-
-
 
     """
     La función devuelve el nombre del jugador con más logros de una lista de jugadores.
@@ -506,7 +512,6 @@ def obtener_jugador_mayor_logros(lista_jugadores: list[dict])-> str:
             jugador_mayor_logros = jugador["nombre"]
 
     return jugador_mayor_logros
-
 
 
 def ordenados_posicion_cancha(lista_jugadores: list[dict])-> None:
@@ -532,14 +537,18 @@ def ordenados_posicion_cancha(lista_jugadores: list[dict])-> None:
         print("{0}, {1} porcentaje tiros decampo: {2}".format(posicion, nombre, porcentaje_tiros_de_campo))
 
 
-def imprimir_tabla_jugadores(lista_jugadores: list[dict])-> None:
+def imprimir_guarda_tabla_jugadores(lista_jugadores: list[dict])-> None:
 
     """
-    Esta función imprime una tabla con los jugadores y sus estadísticas.
-
-    :param lista_jugadores: una lista de diccionarios que representan a los jugadores, donde cada diccionario
-    contiene información como el nombre del jugador y sus estadísticas.
+    Esta función imprime una tabla de estadísticas de jugadores y la guarda en un archivo CSV.
+    
+    :param lista_jugadores: Una lista de diccionarios que representan a los jugadores de baloncesto y
+    sus estadísticas. Cada diccionario contiene las claves "nombre" y "estadisticas" que es otro
+    diccionario que contiene las claves "puntos_totales" (total de puntos), "rebotes_totales" (total de
+    rebotes), "
+    :type lista_jugadores: list[dict]
     """
+
     nombre_archivo = "informe_jugadores.csv"
     texto_generado = generar_texto(lista_jugadores)
     
@@ -557,7 +566,22 @@ def imprimir_tabla_jugadores(lista_jugadores: list[dict])-> None:
     print("---------------------------------------------------------------------------")
     guardar_archivo_csv(nombre_archivo, texto_generado)
 
+
 def generar_texto(data):
+    
+    """
+    La función genera una representación de texto de los datos del jugador de baloncesto en formato de
+    lista o de diccionario.
+    
+    :param data: Los datos de entrada que pueden ser un diccionario o una lista de diccionarios que
+    contienen información sobre los jugadores de baloncesto y sus estadísticas
+    :return: La función `generar_texto` devuelve una cadena que contiene datos en un formato específico.
+    El formato depende del tipo de `datos` de entrada. Si `data` es una lista de diccionarios, la
+    función devuelve una cadena con valores separados por comas para cada diccionario de la lista. Si
+    `data` es un diccionario, la función devuelve una cadena con valores separados por comas para las
+    claves y valores en el diccionario
+    """
+
     if isinstance(data, list):
         lista_claves = ["nombre", "posicion", "puntos_totales", "rebotes_totales", "robos_totales"]
         filas = []
@@ -594,68 +618,6 @@ def generar_texto(data):
 
     else:
         return "Error: El tipo de entrada no es compatible."
-
-
-def guardar_archivo_csv(nombre_archivo: str, contenido: str) -> bool:
-    """
-    Esta función guarda el contenido de una cadena en un archivo con el nombre de archivo dado y
-    devuelve un valor booleano que indica si la operación fue exitosa o no.
-
-    Parametros: 
-        -nombre_archivo: Una cadena que representa el nombre del archivo que se va a crear o
-        sobrescribir
-
-        -contenido: El contenido que se escribirá en el archivo. Debería ser una cadena
-
-    :retorno: 
-        -un valor booleano, ya sea True o False, según si el archivo se creó correctamente o no.
-    """
- 
-    with open(nombre_archivo, 'w+') as archivo:
-        resultado = None 
-        resultado = archivo.write(contenido)
-    if resultado:
-        print("Se creó el archivo: {0}".format(nombre_archivo))
-        return True
-
-    print("Error al crear el archivo: {0}".format(nombre_archivo))
-    return False
-
-def ordenar_por_estaditica(lista: list[dict], clave: str, flag_orden: bool = True)->list[dict]:
-    """
-    Esta función ordena una lista de diccionarios por una clave específica dentro del diccionario
-    "estadisticas", ya sea en orden ascendente o descendente.
-    
-    :param lista: Una lista de diccionarios, donde cada diccionario representa un elemento y contiene
-    información sobre sus estadísticas
-    :type lista: list[dict]
-    :param clave: "clave" es un parámetro de cadena que representa la clave o atributo del diccionario
-    en la lista que se usará para ordenar la lista. En este caso, es la clave del diccionario
-    "estadisticas" dentro de cada diccionario de la lista
-    :type clave: str
-    :param flag_orden: El parámetro flag_orden es un indicador booleano que determina si la lista debe
-    ordenarse en orden ascendente o descendente según el valor de la clave especificada en el
-    diccionario. Si flag_orden es True, la lista se ordenará en orden ascendente, y si es False, la
-    lista será
-    :type flag_orden: bool
-    :return: La función `ordenar_por_estaditica` devuelve una nueva lista de diccionarios ordenados por
-    una clave específica en orden ascendente o descendente.
-    """
-
-    lista_nueva = lista[:]
-    rango_a = len(lista) -1 
-    flag_swap = True
-
-    while flag_swap:
-        flag_swap = False
-        for indice_A in range(rango_a): 
-            if (flag_orden == True and lista_nueva[indice_A]["estadisticas"][clave] > lista_nueva[indice_A+1]["estadisticas"][clave]) \
-                or(flag_orden == False and lista_nueva[indice_A]["estadisticas"][clave] < lista_nueva[indice_A+1]["estadisticas"][clave]):
-                lista_nueva[indice_A], lista_nueva[indice_A+1] = lista_nueva[indice_A+1], lista_nueva[indice_A]
-                flag_swap = True
-
-    return lista_nueva
-
 
 def ordenar_por_clave_doble(lista: list[dict], clave1: str, clave2: str, flag_orden: bool) -> list[dict]:
     """
@@ -703,7 +665,7 @@ def obtener_jugadores_con_estadisticas_ordenadas(lista_jugadores:list[dict])-> l
 
     lista_estadisticas = ["rebotes_totales", "asistencias_totales", "robos_totales", "puntos_totales"]
     for estadistaca in lista_estadisticas:
-        lista_ordenada = ordenar_por_estaditica(lista_jugadores, estadistaca , False)
+        lista_ordenada = ordenar_por_clave_doble(lista_jugadores,"estadisticas" ,estadistaca , False)
         jugadores_con_estadisticas = []
 
         for i in range(len(lista_ordenada)):
