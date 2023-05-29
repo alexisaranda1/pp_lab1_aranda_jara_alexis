@@ -1,9 +1,16 @@
 from funciones_parcial import *
 
-
 def app(lista_jugadores: list) -> None:
+    
+    """
+    Esta es una función que contiene un menú con varias opciones para manipular una lista de jugadores
+    de baloncesto y sus estadísticas.
+    
+    :param lista_jugadores: El parámetro "lista_jugadores" es una lista de diccionarios, donde cada
+    diccionario representa a un jugador de baloncesto y sus estadísticas
+    :type lista_jugadores: list
+    """
 
-    texto_generado = ""
     jugador_segun_indice = None
 
     while True:
@@ -18,36 +25,40 @@ def app(lista_jugadores: list) -> None:
                 print("¡Salió!")
                 break
             case 1:
-                buscar_nombre_posicion(lista_jugadores)
+                imprimir_lista_jugadores(lista_jugadores)
             case 2:
-                buscar_nombre_posicion(lista_jugadores)
+                imprimir_lista_jugadores(lista_jugadores)
                 jugador_segun_indice = obtener_nombre_estadisticas(lista_jugadores)
             case 3:
                 if jugador_segun_indice:
-                    nombre_archivo = "nombre_estadisticas_jugador.csv"
-                    texto_generado = genera_texto(jugador_segun_indice)
+                    nombre = jugador_segun_indice["nombre"]
+                    nombre = nombre.replace(" ", "_")
+                    nombre = nombre.lower()
+                    nombre_archivo = "estadisticas_{}.csv".format(nombre)
+                    texto_generado = generar_texto(jugador_segun_indice)
                     guardar_archivo_csv(nombre_archivo, texto_generado)
+                    jugador_segun_indice = None
                 else:
                     print("No se puede guardar el archivo. Primero debe ingresar a la opción 2.")
             case 4:
-                buscar_nombre_posicion(lista_jugadores)
+                imprimir_lista_jugadores(lista_jugadores)
                 jugadores_encontrados = buscar_jugador_por_nombre(lista_jugadores)
                 imprimir_datos_jugadores(jugadores_encontrados)
             case 5:
                 lista_jugadores_alfabeticamente(lista_jugadores)
             case 6:
-                buscar_nombre_posicion(lista_jugadores)
+                imprimir_lista_jugadores(lista_jugadores)
                 jugadores_encontrados = buscar_jugador_por_nombre(lista_jugadores)
                 imprimir_datos_jugadores_salon(jugadores_encontrados)
             case 7:
                 max_rebotes = encontrar_maximo(lista_jugadores, "estadisticas", "rebotes_totales")
-                imprimir_dato(max_rebotes)
+                imprimir_jugador_maximo(max_rebotes, "estadisticas","rebotes_totales")
             case 8:
                 max_porcentaje_tiros_campo = encontrar_maximo(lista_jugadores, "estadisticas", "porcentaje_tiros_de_campo")
-                imprimir_dato(max_porcentaje_tiros_campo)
+                imprimir_jugador_maximo(max_porcentaje_tiros_campo, "estadisticas", "porcentaje_tiros_de_campo")
             case 9:
                 max_asistencias = encontrar_maximo(lista_jugadores, "estadisticas", "asistencias_totales")
-                imprimir_dato(max_asistencias)
+                imprimir_jugador_maximo(max_asistencias, "estadisticas", "asistencias_totales")
             case 10:
                 jugadores_promedio_puntos = filtrar_jugadores_por_estadistica(lista_jugadores, "promedio_puntos_por_partido")
                 imprimir_jugadores(jugadores_promedio_puntos, "promedio_puntos_por_partido")
@@ -59,10 +70,10 @@ def app(lista_jugadores: list) -> None:
                 imprimir_jugadores(jugadores_promedio_asistencias, "promedio_asistencias_por_partido")
             case 13:
                 jugadores_max_robos = encontrar_maximo(lista_jugadores, "estadisticas", "robos_totales")
-                imprimir_dato(jugadores_max_robos)
+                imprimir_jugador_maximo(jugadores_max_robos, "estadisticas","robos_totales")
             case 14:
                 jugadores_max_bloqueos = encontrar_maximo(lista_jugadores, "estadisticas", "bloqueos_totales")
-                imprimir_dato(jugadores_max_bloqueos)
+                imprimir_jugador_maximo(jugadores_max_bloqueos, "estadisticas","bloqueos_totales")
             case 15:
                 jugadores_porcentaje_tiros_libres = filtrar_jugadores_por_estadistica(lista_jugadores, "porcentaje_tiros_libres")
                 imprimir_jugadores(jugadores_porcentaje_tiros_libres, "porcentaje_tiros_libres")
@@ -77,55 +88,20 @@ def app(lista_jugadores: list) -> None:
             case 19:
                 jugador_con_mas_temporadas(lista_jugadores)
             case 20:
+
                 ordenados_posicion_cancha(lista_jugadores)
             case 23:
-
-                #imprimir_tabla_jugadores(lista_jugadores)
-
-                lista_ordenada_puntos_totales = ordenar_por_estaditica(lista_jugadores,"puntos_totales",False)
-                lista_ordenada_rebotes_totales = ordenar_por_estaditica(lista_jugadores,"rebotes_totales",False)
-                lista_ordenada_asistencias_totales = ordenar_por_estaditica(lista_jugadores,"asistencias_totales",False)
-                lista_ordenada_bloqueos_totales = ordenar_por_estaditica(lista_jugadores,"bloqueos_totales",False)
-
-                print ("----------------puntos-------------------")
-                for i in range(len(lista_ordenada_puntos_totales)):
-                    jugador = lista_ordenada_puntos_totales[i]
-                    jugador["estadisticas"]["puntos_totales"] = i + 1
-                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
-                print("-----------------rebotes-----------------------------")
-
-                for i in range(len(lista_ordenada_rebotes_totales)):
-                    jugador = lista_ordenada_puntos_totales[i]
-                    jugador["estadisticas"]["puntos_totales"] = i + 1
-                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
-                print("----------------asitencias-------------")
-
-                for i in range(len(lista_ordenada_asistencias_totales)):
-                    jugador = lista_ordenada_puntos_totales[i]
-                    jugador["estadisticas"]["puntos_totales"] = i + 1
-                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
-                print("----------------bloqueos-------------")
-                for i in range(len(lista_ordenada_bloqueos_totales)):
-                    jugador = lista_ordenada_puntos_totales[i]
-                    jugador["estadisticas"]["puntos_totales"] = i + 1
-                    print(jugador["nombre"], jugador["estadisticas"]["puntos_totales"])
+                jugadores_con_estadisticas = obtener_jugadores_con_estadisticas_ordenadas(lista_jugadores)
+                imprimir_tabla_jugadores(jugadores_con_estadisticas)
+                
             case _:
+
                 print("¡Opción incorrecta!")
-
         clear_console()
-
 
 
 
 archivo = "dt.json"
 lista_jugadores = leer_archivo_json(archivo)
 app(lista_jugadores)
-
-
-
-
-
-
-
-
 
